@@ -6,23 +6,27 @@
 using namespace std;
 
 int main() {
-	int i;
-	int dp[1001][3] = {0,};
-	int cost[1001][3];
-	cin >> i;
+	queue<int> q;
 	
-	for(int j = 1; j<= i; j++)
-	{
-		cin >> cost[j][0] >> cost[j][1] >> cost[j][2];
+	int n, k;
+	cin >> n >> k;
+
+	for (int i = 1; i <=n; i++){
+		q.push(i);
 	}
+
+	cout << "<";
 	
-	for(int j = 1 ; j <= i ;j++)
-	{
-		dp[j][0] = min(dp[j-1][1] , dp[j-1][2]) + cost[j][0];
-		dp[j][1] = min(dp[j-1][0] , dp[j-1][2]) + cost[j][1];
-		dp[j][2] = min(dp[j-1][0] , dp[j-1][1]) + cost[j][2];
+	while (!q.empty()){
+		int number;
+		for (int i = 0; i < k-1; i++){
+			number = q.front();
+			q.pop();
+			q.push(number);
+		}
+		number = q.front();
+		q.pop();
+		if (q.size() > 0)	cout << number << ", ";
+		else cout << number<<">";
 	}
-	
-	cout << min(min(dp[i][0] , dp[i][1]) , dp[i][2]);
-    return 0;
 }
