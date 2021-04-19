@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-long long dp[9];
+long long dp[9]
 long long tmp[9];
 
 int main() {
