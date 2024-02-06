@@ -1,0 +1,6 @@
+i = int(input())
+j = int(input())
+print(int(i) * int(j % 10))
+print(int(i) * int(j / 10 % 10))
+print(int(i) * int(j / 100))
+print(int(i) * int(j))
