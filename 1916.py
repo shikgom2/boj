@@ -19,7 +19,6 @@ def dijkstra(graph, start, end):
 
     return distance[end]
 
-# 입력 받기
 N, M = map(int, input().split())
 graph = [[] for _ in range(N + 1)]
 
@@ -29,8 +28,6 @@ for _ in range(M):
 
 start_city, end_city = map(int, input().split())
 
-# 다익스트라 알고리즘을 통해 최소 비용 계산
 result = dijkstra(graph, start_city, end_city)
 
-# 결과 출력
 print(result)
