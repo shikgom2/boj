@@ -1,6 +1,4 @@
-import sys
 
-#Generate LPS Failure Function
 def failure(pattern):
     lps = [0] * len(pattern)
     length = 0
@@ -20,39 +18,40 @@ def failure(pattern):
     return lps
 
 def kmp(text, pattern, lps):
-
     i = 0
     j = 0
-    count = 0
-    indices = []
-
     while i < len(text):
-        #1. Same Pattern
         if text[i] == pattern[j]:
             i += 1
             j += 1
-            #3. Find Pattern
             if j == len(pattern):
-                count += 1
-                indices.append(i - j)
-                j = lps[j - 1]
-        #2. Pattern different
+                return True
         else:
-            #2-1. move LPS[index-1]
             if j != 0:
                 j = lps[j - 1]
-            #2-2. move + 1
             else:
                 i += 1
-    return count, indices
+    return False
 
-text = input()
-pattern = input()
+n = int(input())
+list1 = list(map(int, input().split())) 
+list2 = list(map(int, input().split())) 
+list1 = sorted(list1)
+list2 = sorted(list2)
 
-lps = failure(pattern)
-count, indices = kmp(text, pattern, lps)
-#print pattern count
-print(count)
-#print pattern index
-for i in indices:
-    print(int(i+1), end=' ')
+check1 = [0] * 720100
+check2 = [0] * 360100
+
+for lists in list1:
+    check1[lists] = 1
+    check1[lists + 360000] = 1
+for lists in list2:
+    check2[lists] = 1
+
+lps = failure(check2)
+fun1 = kmp(check1, check2, lps)
+
+if(fun1):
+    print("possible")
+else:
+    print("impossible")

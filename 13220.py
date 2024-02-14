@@ -46,8 +46,9 @@ def kmp(text, pattern, lps):
                 i += 1
     return count, indices
 
-text = input()
-pattern = input()
+N = int(input())
+text = list(map(int, input().split())) 
+pattern = list(map(int, input().split())) 
 
 lps = failure(pattern)
 count, indices = kmp(text, pattern, lps)

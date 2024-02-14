@@ -16,16 +16,10 @@ def compute_lps_array(pattern):
                 i += 1
     return lps
 
-while(True):
-    pattern = input()
-    if(pattern == '.'):
-        break    
-    lps = compute_lps_array(pattern)
-    print(lps)
-    idx = lps[len(pattern) - 1]
-    
-    if(len(pattern) % (len(pattern) - idx) != 0):
-        print(1)
-    else:
-        idx = len(pattern) - idx
-        print(int(len(pattern) / idx))
+pattern = input()
+#lps = compute_lps_array(pattern)
+ans = 0
+for i in range(len(pattern)):
+    ans = max(ans, max(compute_lps_array(pattern[i:])))
+
+print(ans, end="")
