@@ -19,7 +19,6 @@ def compute_lps_array(pattern):
     return lps
 
 def kmp_search(text, pattern):
-
     lps = compute_lps_array(pattern)
     i = 0
     j = 0
@@ -42,15 +41,14 @@ def kmp_search(text, pattern):
     return count, indices
 
 fibo = ["0"] * 101
-fibo[1] = "0"
-fibo[2] = "1"
-for i in range(3, 51):
+fibo[0] = "0"
+fibo[1] = "1"
+for i in range(2, 21):
     fibo[i] = str(fibo[i-1]) + str(fibo[i-2])
 
 text = int(input())
 pattern = input()
     
-print(fibo)
 count, indices = kmp_search(fibo[text+1], pattern)
 cnt = 1
 print(f"Case {cnt}: {count}")
