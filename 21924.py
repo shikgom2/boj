@@ -28,5 +28,17 @@ for edge in edges:
     z, x, y = edge
     if find(x) != find(y):
         union(x, y)
-        ans = ans + z
-print(ans)
+    else:
+        ans += z
+
+connected = True
+root = find(1)
+for i in range(2, m + 1):
+    if find(i) != root:
+        connected = False
+        break
+
+if(connected):
+    print(ans)
+else:
+    print(-1)
