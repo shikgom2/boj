@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 
 def failure(pattern):
     lps = [0] * len(pattern)
@@ -39,8 +41,8 @@ list2 = list(map(int, input().split()))
 list1 = sorted(list1)
 list2 = sorted(list2)
 
-check1 = [0] * 720100
-check2 = [0] * 360100
+check1 = [0] * 720001
+check2 = [0] * 360001
 
 for lists in list1:
     check1[lists] = 1

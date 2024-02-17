@@ -44,14 +44,13 @@ def kmp(text, pattern, lps):
     return count, indices
 
 N = int(input())
-text = list(map(int, input().split()))
+text = input()
 text = text * 2
-pattern = list(map(int, input().split()))
+pattern = input()
+
+print(text)
 
 lps = failure(pattern)
 count, indices = kmp(text, pattern, lps)
 #print pattern count
-if(count > 0):
-    print("YES")
-else:
-    print("NO")
+print(count)
