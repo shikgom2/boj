@@ -38,13 +38,13 @@ def kmp(text, pattern, lps):
 n = int(input())
 list1 = list(map(int, input().split())) 
 list2 = list(map(int, input().split())) 
-list1 = sorted(list1)
-list2 = sorted(list2)
 
-check1 = [0] * 720001
-check2 = [0] * 360001
+check1 = [0] * 720000
+check2 = [0] * 360000
 
 for lists in list1:
+    if(lists == 360000):
+        lists = 0        
     check1[lists] = 1
     check1[lists + 360000] = 1
 for lists in list2:
