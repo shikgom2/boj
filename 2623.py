@@ -1,43 +1,48 @@
 import sys
 input = sys.stdin.readline
 
-def dfs(node, graph, visited, stack):
+def dfs(node, graph, visited, recStack, stack):
     visited[node] = True
+    recStack[node] = True
 
     for next in graph[node]:
         if not visited[next]:
-            dfs(next, graph, visited, stack)
-    
+            if dfs(next, graph, visited, recStack, stack):
+                return True
+        elif recStack[next]:
+            return True
+
     stack.append(node)
-
-
+    recStack[node] = False
+    return False
 
 N, M = map(int, input().split())
 
 graph = {}
 
-# {1: [], 2: [], 3: [] ...}
 for i in range(0, N):
     graph[i] = []
 
-# {1: [2], 2: [4], 3: [5], 4: [] ...}
 for _ in range(0, M):
     i = list(map(int, input().split()))
-    
     for j in range(1, len(i)-1): 
         a = i[j]
         b = i[j+1]
         graph[a-1].append(b-1)
 
-# {False, False, ... N개만큼} 
 visited = [False for _ in range(0, N)]
+recStack = [False for _ in range(0, N)]
 
 stack = []
-print(graph)
+cycle_detected = False
 for i in range(0, N):
     if not visited[i]:
-        dfs(i, graph, visited, stack)
+        if dfs(i, graph, visited, recStack, stack):
+            cycle_detected = True
+            break
 
-print(stack)
-while stack:
-    print(stack.pop() + 1)
+if cycle_detected:
+    print(0)
+else:
+    while stack:
+        print(stack.pop() + 1)
