@@ -1,7 +1,3 @@
-import math
-import sys
-input = sys.stdin.readline
-
 def failure(pattern):
     lps = [0] * len(pattern)
     length = 0
@@ -42,32 +38,23 @@ def kmp(text, pattern, lps):
                 j = lps[j - 1]
             else:
                 i += 1
-    return count
+    return count, indices
 
-N = int(input())
-temp = [list(map(int, input().split())) for _ in range(N)]
+str = input()
+bomb = input()
+stack = []
 
-songs = []
-for i in range(N):
-    tmp = []
-    for j in range(1, len(temp[i]) - 1):    
-        tmp.append(temp[i][j+1] - temp[i][j])
-    songs.append(tmp)
+lps = failure(bomb)
 
-L = int(input())
-temp = list(map(int, input().split()))
-melody = []
+for i in range(len(str)):
+    stack.append(str[i])
+    
+    if(str[i] == bomb[len(bomb) - 1]):
+        count, indicies = kmp(stack, bomb, lps)
 
-for i in range(L-1):
-    melody.append(temp[i+1] - temp[i])
-
-lps = failure(melody)
-
-flag = False
-for i in range(0, N):
-    count = kmp(songs[i], melody, lps)
-    if(count > 0):  
-        print(i+1, end=" ")
-        flag = True
-if(flag == False):
-    print(-1)
+        if(count > 0):
+            for i in range(count):
+                idx = indicies[i]
+                del stack[idx:(idx + len(bomb))]
+if stack:    
+    print(''.join(stack))

@@ -1,58 +1,52 @@
-import sys
-sys.setrecursionlimit(10**6)
-
-def dfs(v, visited, stack):
-    visited[v] = 1
-
+#DFS
+def dfs(graph, v, visited, stack):
+    visited[v] = True
     for w in graph[v]:
-        if visited[w] == 0:
-            stack.append(w)
-            dfs(w, visited, stack)
-    stack.append(v) 
-
-def reverseGraph():
-    reverse_graph = [[] for i in range(V+1)]
-    for i in range(1, V+1):
-        for j in graph[i]:
-            reverse_graph[j].append(i)
-    return reverse_graph
-
-def reverseDFS(v, visited,stack):
-    visited[v] = 1
+        if not visited[w]:
+            dfs(graph, w, visited, stack)
     stack.append(v)
-    for w in reverse_graph[v]:
-        if visited[w] == 0:
-            reverseDFS(w, visited, stack)
 
+#Reverse DFS
+def reverseDFS(graph, v, visited, component):
+    visited[v] = True
+    component.append(v) #Add SCC
+    for w in graph[v]:
+        if not visited[w]:
+            reverseDFS(graph, w, visited, component)
+
+#input
 V, E = map(int, input().split())
-visited = [0] * (V+1)
-graph = [[] for i in range(V + 1)]
+edges = [list(map(int, input().split())) for _ in range(E)]
 
-stack = []
-for _ in range(E):
-    a, b = map(int, input().split())
-    graph[a].append(b)
+graph = [[] for _ in range(V + 1)]
+reverse_graph = [[] for _ in range(V + 1)]
+#Init graph
+for i, j in edges:
+    graph[i].append(j)
+    reverse_graph[j].append(i)
 
-for i in range(1, V+1):
-    if visited[i] == 0:
-        dfs(i, visited, stack)
-print(stack)
-reverse_graph = reverseGraph()
+visited = [False] * (V + 1)
+stack = [] #DFS stack
 
-visited = [0] * (V+1)
+# DFS on original graph
+for i in range(1, V + 1):
+    if not visited[i]:
+        dfs(graph, i, visited, stack)
+
+visited = [False] * (V + 1)
 results = []
 
+# Reverse DFS on reversed graph
 while stack:
-    ssc = []
     node = stack.pop()
-    if visited[node] == 0:
-        reverseDFS(node, visited, ssc)
-        results.append(sorted(ssc))
+    if not visited[node]:
+        component = []
+        reverseDFS(reverse_graph, node, visited, component)
+        results.append(sorted(component))
 
+#Output
 print(len(results))
-results = sorted(results)
-
-for res in results:
-    for i in res:
-        print(i, end=' ')
+for result in sorted(results):
+    for V in result:
+        print(V, end=' ')
     print('-1')
