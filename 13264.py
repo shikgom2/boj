@@ -54,23 +54,7 @@ def suffix_array(s):
     return sa
 
 S = input().strip()
-S += "$"
-S2 = input().strip()
-
-S += S2
 suffix = suffix_array(S)
 
-lcp = lcp_array(S, suffix)
-#print(lcp)
-max_ele = -1
-max_idx = -1
-for l in range(0, len(S)):
-    if(lcp[l] > max_ele and lcp[l] <= min(len(S), len(S2))):
-        max_ele = lcp[l]
-        max_idx = l
-
-if(max_idx < len(S2)):
-    max_idx -= 1
-    
-print(max_idx)
-print(S[suffix[max_idx] :])
+for i in suffix:
+    print(i)
