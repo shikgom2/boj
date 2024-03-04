@@ -28,12 +28,24 @@ def dijkstra(edges, start):
 
 m, n, s = map(int, input().split())
 edges = []
+dist = [0] * (m+1)
 
 for i in range(n):
     x, y, z = map(int, input().split())
     edges.append((z, x, y))
-distances = dijkstra(edges, s)
 
+for i in range(1, (m+1)):
+    distances = dijkstra(edges, i)
+
+    for j in range(1, len(distances)):
+        d = distances[j]
+        #print(f"{i} -> {j} : {d}")
+
+        if(s == j):
+           dist[i] = d
+
+distances = dijkstra(edges, s)
 for i in range(1, len(distances)):
-    s = distances[i]
-    print(s)
+    dist[i] += distances[i]
+
+print(max(dist))

@@ -15,15 +15,15 @@ def dp(n, m, dir):
         return memo[dir][n][m]
     
     temp = -999999999
-    #up -> down
+    #before moved down
     if dir == 0:
         temp = max(dp(n+1, m, 0), dp(n, m-1, 1), dp(n, m+1, 2)) + cost[n][m]
-    #left -> right
+    #before moved left
     elif dir == 1:
-        temp = max(dp(n, m -1, 1), dp(n+1, m, 0)) + cost[n][m]
-    #right -> left
+        temp = max(dp(n+1, m, 0), dp(n, m -1, 1)) + cost[n][m]
+    #before moved right
     elif dir == 2:
-        temp = max(dp(n, m+1, 2), dp(n+1, m, 0)) + cost[n][m]
+        temp = max(dp(n+1, m, 0), dp(n, m+1, 2)) + cost[n][m]
     
     memo[dir][n][m] = temp
     return temp
