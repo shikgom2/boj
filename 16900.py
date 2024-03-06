@@ -1,6 +1,3 @@
-import sys
-
-#Generate LPS Failure Function
 def failure(pattern):
     lps = [0] * len(pattern)
     length = 0
@@ -18,7 +15,8 @@ def failure(pattern):
                 lps[i] = 0
                 i += 1
     return lps
-txt = input()
-lps = failure(txt)
 
-print(lps)
+s, k = map(str, input().split())
+k = int(k)
+Z = failure(s)
+print((len(s) * k) - (Z[len(s) - 1] * (k-1)))

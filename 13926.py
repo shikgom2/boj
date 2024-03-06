@@ -34,18 +34,29 @@ def miller_rabin(n, k=5):
             return False
     return True
 
-def euler_phi(n):
-    amount = n
-    p = 2
+def find_prime_factors(n):
+    prime_factors = []
+    if n % 2 == 0:
+        prime_factors.append(2)
+        while n % 2 == 0:
+            n //= 2
+    p = 3
     while p * p <= n:
         if n % p == 0:
+            prime_factors.append(p)
             while n % p == 0:
                 n //= p
-            amount -= amount // p
-        p += 1
+        p += 2
     if n > 1:
-        amount -= amount // n
-    return amount
+        prime_factors.append(n)
+    return prime_factors
+
+def euler_phi(n):
+    prime_factors = find_prime_factors(n)
+    phi = n
+    for p in prime_factors:
+        phi -= phi // p
+    return phi
 
 n = int(input())
 if(miller_rabin(n)):

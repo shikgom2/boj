@@ -15,8 +15,10 @@ def failure(pattern):
                 lps[i] = 0
                 i += 1
     return lps
+cnt = 1
 
 def kmp(text, pattern, lps):
+
     i = 0
     j = 0
     count = 0
@@ -35,29 +37,21 @@ def kmp(text, pattern, lps):
                 j = lps[j - 1]
             else:
                 i += 1
-    return count, indices
+    return count
 
-def optimized_string_removal(s, bomb):
-    stack = []
-    lps = failure(bomb)
+while(True):
+    k = int(input())
+    if(k == 0):
+        break
+    s = input()
 
-    for char in s:
-        stack.append(char)
-        if len(stack) >= len(bomb) and char == bomb[-1]:
-            if ''.join(stack[-len(bomb):]) == bomb:
-                del stack[-len(bomb):]
+    Z = failure(s)
+    print(f"Test case #{cnt}")
 
-    return ''.join(stack)
-
-str_input = input()
-bomb = input()
-
-stack = []
-lps = failure(bomb)
-
-for char in str_input:
-    stack.append(char)
-    if len(stack) >= len(bomb) and char == bomb[-1]:
-        if ''.join(stack[-len(bomb):]) == bomb:
-            del stack[-len(bomb):]
-print(''.join(stack))
+    print(Z)
+    for i in Z:
+        if(i != 0):
+            print(s[0:(i+1)])
+            count = kmp(s, s[0:i], Z)
+            #print(f"{i} {count}")
+    cnt += 1 

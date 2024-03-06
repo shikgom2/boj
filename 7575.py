@@ -1,6 +1,7 @@
 import sys
 
-def compute_lps_array(pattern):
+#Generate LPS Failure Function
+def failure(pattern):
     lps = [0] * len(pattern)
     length = 0
     
@@ -18,9 +19,8 @@ def compute_lps_array(pattern):
                 i += 1
     return lps
 
-def kmp_search(text, pattern):
+def kmp(text, pattern, lps):
 
-    lps = compute_lps_array(pattern)
     i = 0
     j = 0
     count = 0
@@ -30,10 +30,12 @@ def kmp_search(text, pattern):
         if pattern[j] == text[i]:
             i += 1
             j += 1
+            #Find Pattern
             if j == len(pattern):
                 count += 1
                 indices.append(i - j)
                 j = lps[j - 1]
+        #Pattern different : find next index
         else:
             if j != 0:
                 j = lps[j - 1]
@@ -41,10 +43,26 @@ def kmp_search(text, pattern):
                 i += 1
     return count, indices
 
+N, K = map(int, input().split())
+
+li = []
+for _ in range(N):
+    a = int(input())
+    s = map(int, input().split())
+    li.append(s)
+
+for i in range(0, len(li[0]) - K):
+    s = li[i:(i+K)]
+    print(s)
+'''
 text = input()
 pattern = input()
 
-count, indices = kmp_search(text, pattern)
+lps = failure(pattern)
+count, indices = kmp(text, pattern, lps)
+#print pattern count
 print(count)
+#print pattern index
 for i in indices:
     print(int(i+1), end=' ')
+'''
