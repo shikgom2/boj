@@ -1,4 +1,11 @@
 import random
+import math
+
+def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
 def mod_pow(base, exponent, modulus):
     result = 1
     base = base % modulus
@@ -34,22 +41,34 @@ def miller_rabin(n, k=5):
             return False
     return True
 
+def pollards_rho(n):
+    if n % 2 == 0:
+        return 2
+    x = random.randint(2, n - 1)
+    y = x
+    c = random.randint(1, n - 1)
+    d = 1
+    while d == 1:
+        x = (mod_pow(x, 2, n) + c) % n
+        y = (mod_pow(y, 2, n) + c) % n
+        y = (mod_pow(y, 2, n) + c) % n
+        d = gcd(abs(x - y), n)
+        if d == n:
+            return pollards_rho(n)
+    return d
+
 def find_prime_factors(n):
     prime_factors = []
-    if n % 2 == 0:
-        prime_factors.append(2)
-        while n % 2 == 0:
-            n //= 2
-    p = 3
-    while p * p <= n:
-        if n % p == 0:
-            prime_factors.append(p)
-            while n % p == 0:
-                n //= p
-        p += 2
-    if n > 1:
-        prime_factors.append(n)
-    return prime_factors
+    factors = [n]
+    while factors:
+        f = factors.pop()
+        if miller_rabin(f):
+            prime_factors.append(f)
+        else:
+            divisor = pollards_rho(f)
+            factors.append(divisor)
+            factors.append(f // divisor)
+    return list(set(prime_factors))
 
 def euler_phi(n):
     prime_factors = find_prime_factors(n)
@@ -59,7 +78,9 @@ def euler_phi(n):
     return phi
 
 n = int(input())
-if(miller_rabin(n)):
+if(n==1):
+    print(1)
+elif(miller_rabin(n)):
     print(n-1)
 else:
     print(euler_phi(n))

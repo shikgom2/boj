@@ -12,22 +12,23 @@ def bellman_ford():
                               return True
       return False
 
-N = int(input())
-for _ in range(N):
-    v, e, h = map(int, input().split())
-    edges = []
-    dist = [INF] * (v + 1)
-    dist[1] = 0
+v, e = map(int, input().split())
+edges = []
+dist = [INF] * (v + 1)
+dist[1] = 0
 
-    for _ in range(e):
-        x, y, z = map(int, input().split())
+for _ in range(e):
+    x, y, t, z = map(str, input().split())
+    x = int(x)
+    y = int(y)
+    z = int(z)
+
+    if(t == 'b'):         
         edges.append((z, x, y))
-        edges.append((z, y, x))
-    for _ in range(h):
-        x, y, z = map(int, input().split())
-        edges.append((-z, x, y)) 
+    elif(t == 'r'):
+        edges.append((-z, x, y))
+bellman_ford()
 
-    if bellman_ford():
-        print("YES")
-    else:
-        print("NO")
+for i in range(2, v + 1):
+    if dist[i] < 0:
+        print(i)
