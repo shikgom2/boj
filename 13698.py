@@ -1,18 +1,18 @@
 a = list(map(str, input()))
-small = [1,0,0,2]
+s = [1,0,0,2]
 for i in a:
-    if i == 'A':
-        small[0], small[1] = small[1],small[0]
-    elif i == 'B':
-        small[0], small[2] = small[2],small[0]
-    elif i == 'C':
-        small[0], small[3] = small[3],small[0]
-    elif i == 'D':
-        small[1], small[2] = small[2],small[1]
-    elif i == 'E':
-        small[1], small[3] = small[3],small[1]
-    elif i == 'F':
-        small[2], small[3] = small[3],small[2]
+    if (i == 'A'):
+        s[0], s[1] = s[1], s[0]
+    elif (i == 'B'):
+        s[0], s[2] = s[2], s[0]
+    elif (i == 'C'):
+        s[0], s[3] = s[3], s[0]
+    elif (i == 'D'):
+        s[1], s[2] = s[2], s[1]
+    elif(i == 'E'):
+        s[1], s[3] = s[3], s[1]
+    elif (i == 'F'):
+        s[2], s[3] = s[3], s[2]
 
-print(small.index(1)+1)
-print(small.index(2)+1)
+print(s.index(1)+1)
+print(s.index(2)+1)

@@ -8,6 +8,5 @@ for i in r:
     for j in range(0,10):
         if i == f'{j}':
            res[j] += 1
-        
 for i in res:
     print(i)
