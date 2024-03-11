@@ -5,13 +5,13 @@ while T > 0:
     T -= 1
     cmd = input()
     n = int(input())
-    input_arr = input()
     dq = deque()
 
+    li = input()
     num = ""
-    for char in input_arr:
-        if char.isdigit():
-            num += char
+    for c in li:
+        if c.isdigit():
+            num += c
         elif num:
             dq.append(int(num))
             num = ""
