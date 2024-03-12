@@ -18,7 +18,47 @@ def failure(pattern):
                 lps[i] = 0
                 i += 1
     return lps
+
+def kmp(text, pattern, lps):
+
+    i = 0
+    j = 0
+    count = 0
+    indices = []
+
+    while i < len(text):
+        if pattern[j] == text[i]:
+            i += 1
+            j += 1
+            #Find Pattern
+            if j == len(pattern):
+                count += 1
+                indices.append(i - j)
+                j = lps[j - 1]
+        #Pattern different : find next index
+        else:
+            if j != 0:
+                j = lps[j - 1]
+            else:
+                i += 1
+    return count, indices
+
+
 txt = input()
 lps = failure(txt)
+lps.sort()
+lps = set(lps)
+li = list(lps)
+li.sort(reverse = True)
+
+for i in li:
+    tmp = txt[i:len(txt)]
+    lps = failure(tmp)
+
+    print(tmp)
+
+    print(lps)
+'''
 
 print(lps)
+'''

@@ -53,33 +53,11 @@ def suffix_array(s):
 
     return sa
 
-def find_lcs(S, S1_len, S2_len, suffix, lcp):
-    max_len = -1
-    index = -1
-    
-    for i in range(1, len(S)):
-        # 현재 접미사와 이전 접미사가 서로 다른 문자열에서 온 경우
-        if (suffix[i] < S1_len) != (suffix[i-1] < S1_len):
-            if lcp[i-1] > max_len:
-                max_len = lcp[i-1]
-                index = suffix[i]
-    
-    if max_len > -1:
-        return S[index:index+max_len]
-    else:
-        return "" 
-
 S = input().strip()
-S += "$"
-S2 = input().strip()
-
-S += S2
 suffix = suffix_array(S)
 lcp = lcp_array(S, suffix)
 
-S1_len = len(S) - len(S2) - 1 
-S2_len = len(S2)
+s1 = S[0:max(lcp)]
+s2 = S[len(lcp) - max(lcp) :]
 
-lcs = find_lcs(S, S1_len, S2_len, suffix, lcp)
-print(len(lcs))
-print(lcs)
+print(min(s1, s2))
