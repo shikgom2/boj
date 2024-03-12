@@ -53,27 +53,14 @@ def suffix_array(s):
 
     return sa
 
-S = input().strip()
+S = input()
+S = S + S
 suffix = suffix_array(S)
 lcp = lcp_array(S, suffix)
 
-print(suffix)
-print(lcp)
-max_length=0
-for i in range(len(lcp)):
-    if lcp[i] > max_length:
-        max_length = lcp[i]
-        start_index = suffix[i]
+#print(lcp)
+#print(suffix)
 
-print(S[start_index:start_index + max_length])
-
-'''
-print(lcp)
-
-#s1 = S[0:max(lcp)]
-idx = len(lcp) - max(lcp)
-print(idx)
-s2 = S[idx : idx+max(lcp)]
-
-print(s2)
-'''
+for i in suffix:
+    if i < len(S):
+        print(S[i:i + len(S)])
