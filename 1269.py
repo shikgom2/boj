@@ -1,0 +1,6 @@
+n,m = map(int, input().split())
+li = list(map(int, input().split()))
+li1 = set(li)
+li = list(map(int, input().split()))
+li2 = set(li)
+print(len(li1 - li2) + len(li2 - li1))
