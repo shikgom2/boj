@@ -6,4 +6,3 @@ for _ in range(N):
     for k in j:
         s += int(k)
     print(s % (int(i)-1))
-    
