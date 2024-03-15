@@ -35,6 +35,7 @@ def reverseDFS(graph, v, visited, component):
             reverseDFS(graph, w, visited, component)
 
 # input
+
 V, E = map(int, input().split())
 
 graph = [[] for _ in range((V + 1) * 2)]

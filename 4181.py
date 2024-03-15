@@ -1,37 +1,30 @@
-def ccw(x1, y1, x2, y2, x3, y3):
-    c = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)
-    return c > 0
+import sys
+input = sys.stdin.readline
 
-def convex_hull(positions):
-    convex = []
-    for p3 in positions:
-        while len(convex) >= 2:
-            p1, p2 = convex[-2], convex[-1]
-            if ccw(*p1, *p2, *p3):
-                break
-            convex.pop()
-        convex.append(p3)
+def ccw(p1, p2, p3):
+    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
 
-    return convex
+def convex_hull(points):
+    points = sorted(points)
+    lower = []
+    for p in points:
+        while len(lower) >= 2 and ccw(lower[-2], lower[-1], p) < 0:
+            lower.pop()
+        lower.append(p)
+    upper = []
+    for p in reversed(points):
+        while len(upper) >= 2 and ccw(upper[-2], upper[-1], p) < 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1] + upper[:-1]
 
 n = int(input())
-positions = []
-
+points = []
 for _ in range(n):
     li = list(map(str, input().split()))
-    if(li[2] == 'Y'):
-        positions.append([int(li[0]), -int(li[1])])
+    if li[2] == 'Y':
+        points.append([int(li[0]), int(li[1])])
 
-positions = sorted(positions, key=lambda x: (x[0], x[1]))
-low = convex_hull(positions)
-up = convex_hull(positions[::-1])
-
-convex = low[:-1] + up[:-1]
-top_left = min(convex, key=lambda p: (p[1], p[0]))
-
-top_left_index = convex.index(top_left)
-convex = convex[top_left_index:] + convex[:top_left_index]
-
-print(len(convex))
-for i in convex:
-    print(i[0], -i[1])
+print(len(convex_hull(points)))
+for p in convex_hull(points):
+    print(p[0], p[1])
