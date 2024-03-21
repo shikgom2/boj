@@ -1,6 +1,4 @@
 from math import cos, sin
-from functools import reduce
-import operator
 
 def complex_exp(theta):
     return cos(theta) + 1j * sin(theta)
@@ -44,10 +42,6 @@ def fft(a, b):
         c.pop()
     return c
 
-N, M = map(int, input().split())
-x = list(map(int, input().split()))
-y = list(map(int, input().split()))
-res = fft(x,y)
-res = reduce(operator.xor, res)
+x, y = map(int, input().split())
 
-print(res)
+print(max(fft(x+x, y+y)))
