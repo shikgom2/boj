@@ -1,7 +1,7 @@
 import heapq
 
 def dijkstra(graph, start, end):
-    INF = int(1e9)
+    INF = int(1e11)
     distance = [INF] * (len(graph) + 1)
     distance[start] = 0
     queue = []
@@ -19,17 +19,24 @@ def dijkstra(graph, start, end):
 
     return distance[end]
 
-N=int(input())
-M=int(input())
+V,E = map(int, input().split())
+li = list(map(int, input().split()))
 
-graph = [[] for _ in range(N + 1)]
+graph = [[] for _ in range(V+1)]
 
-for _ in range(M):
+for _ in range(E):
     start, end, cost = map(int, input().split())
-    graph[start].append((end, cost))
+    if(start == V-1 or end == V-1):
+        graph[start+1].append((end+1, cost))
+        graph[end+1].append((start+1, cost))
+    elif(li[start] == 1 or li[end] == 1):
+        continue
+    else:
+        graph[start+1].append((end+1, cost))
+        graph[end+1].append((start+1, cost))
 
-start_city, end_city = map(int, input().split())
-
-result = dijkstra(graph, start_city, end_city)
-
-print(result)
+res = dijkstra(graph, 1, V)
+if(res >= 10**11):
+    print(-1)
+else:
+    print(res)
