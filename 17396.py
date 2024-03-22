@@ -38,5 +38,5 @@ for _ in range(E):
 res = dijkstra(graph, 1, V)
 if(res >= 10**11):
     print(-1)
-else:
+else: 
     print(res)
