@@ -1,82 +1,38 @@
-import sys
-input = sys.stdin.readline
+def insert(root, word):
+    node = root
+    for char in word:
+        if char not in node["children"]:
+            node["children"][char] = {"child_cnt": 0, "finish": False, "children": {}}
+            node["child_cnt"] += 1
+        node = node["children"][char]
+    node["finish"] = True
 
-def insert(trie, string):
-    current_node = trie
-    for char in string:
-        if char not in current_node:
-            current_node[char] = {}
-        current_node = current_node[char]
-    current_node['*'] = string
+def find(root, word):
+    node = root
+    answer = 0
+    for char in word:
+        if node is root or node["child_cnt"] > 1 or node["finish"]:
+            answer += 1
+        node = node["children"][char]
+    return answer
 
-def search(trie, string):
-    current_node = trie
-    for char in string:
-        if char in current_node:
-            current_node = current_node[char]
-        else:
-            return False
-    return '*' in current_node
+def solve(words):
+    root = {"child_cnt": 0, "finish": False, "children": {}}
+    for word in words:
+        insert(root, word)
 
-def starts_with(trie, prefix):
-    current_node = trie
-    for char in prefix:
-        if char in current_node:
-            current_node = current_node[char]
-        else:
-            return []
+    total_strokes = sum(find(root, word) for word in words)
+    avg = total_strokes / len(words)
+    return avg
 
-    return _find_words_in_subtrie(current_node)
-'''
-def starts_with(trie, prefix):
-    current_node = trie
-    for char in prefix:
-        if char in current_node:
-            current_node = current_node[char]
-        else:
-            return False
-    return True
-'''
-
-def _find_words_in_subtrie(subtrie, words=None):
-    if words is None:
-        words = []
-
-    for key, node in subtrie.items():
-        if key == '*':
-            words.append(node)
-        else:
-            _find_words_in_subtrie(node, words)
-    return words
-
-
-while(True):
+while True:
     try:
-        trie = {}    
-        a = int(input())
-        li = []
-        for _ in range(a):
-            s = input().strip()
-            insert(trie, s)
-            li.append(s)
+        n = int(input())
+        trie = []
+        for _ in range(n):
+            s = input()
+            trie.append(s)
 
-        sum = 0
-        idx = 0
-        for s in li:
-            cnt = 0
-            for i in range(1, len(s)+1):
-                tmp = s[0:i]
-                #print(tmp)
-                #print(starts_with(trie, tmp))
-                
-                if(i == 1):
-                    cnt += 1
-                    idx = len(starts_with(trie, tmp))
-                else:
-                    if(idx != len(starts_with(trie, tmp))):
-                        cnt += 1
-                        idx = len(starts_with(trie, tmp))
-            sum += cnt
-        print(f"{sum/a:.2f}")
+        print(f"{solve(trie):.2f}")
     except:
         break
