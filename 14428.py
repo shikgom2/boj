@@ -1,55 +1,47 @@
-import sys
-input = sys.stdin.readline
-MOD = 1000000007
+import math
 
-class SegmentTree:
-    def __init__(self, n, array):
-        self.n = n
-        self.array = array
-        self.tree = [0] * (4*n)
-        self.init(0,n-1,1)
-
-    def init(self, left, right, idx):
-        if left == right:
-            self.tree[idx] = self.array[left]
-            return self.tree[idx]
-        mid = (left + right) // 2
-        self.tree[idx] = (self.init(left, mid, 2*idx) * self.init(mid+1, right, 2*idx+1))
-        return self.tree[idx]
-
-
-    def find_prod(self, left, right):
-        return self.query(left, right, 1, 0, self.n-1)
-
-    def update_value(self, index, value):
-        return self.update(index, value, 1, 0, self.n-1)
-
-        
-    def query(self, left, right, idx, node_left, node_right):
-        if node_right < left or right < node_left:
-            return 1
-        if left <= node_left and node_right <= right:
-            return self.tree[idx]
-        mid = (node_left+node_right) // 2
-        return( self.query(left, right, 2*idx, node_left, mid) * self.query(left, right, 2*idx+1, mid+1, node_right) )
-
-    def update(self, index, new_value, node_idx, node_left, node_right):
-        if index < node_left or index > node_right:
-            return self.tree[node_idx]
-        if node_left == node_right:
-            self.tree[node_idx] = new_value % MOD
-            return self.tree[node_idx] % MOD
-        mid = (node_left+node_right) // 2
-        self.tree[node_idx] = (self.update(index, new_value, 2*node_idx, node_left, mid) * self.update(index, new_value, 2*node_idx+1, mid+1, node_right))
-        return self.tree[node_idx]
-
-n, m, k = map(int,input().split())
-nums = [int(input()) for _ in range(n)]
-segment_tree = SegmentTree(n, nums)
-for _ in range(m+k):
-    a, b, c = map(int, input().split())
-    
-    if a == 1:
-        segment_tree.update_value(b-1, c)
+def init(a, tree, node, start, end):
+    if start == end:
+        tree[node] = a[start]
+        return tree[node]
     else:
-        print(segment_tree.find_prod(b-1,c-1))
+        tree[node] = init(a, tree, node*2, start, (start+end)//2) + \
+                     init(a, tree, node*2+1, (start+end)//2+1, end)
+        return tree[node]
+
+def update(tree, node, start, end, index, diff):
+    if index < start or index > end:
+        return
+    tree[node] += diff
+    if start != end:
+        update(tree, node*2, start, (start+end)//2, index, diff)
+        update(tree, node*2+1, (start+end)//2+1, end, index, diff)
+
+def sum(tree, node, start, end, left, right):
+    if left > end or right < start:
+        return 0
+    if left <= start and end <= right:
+        return tree[node]
+    return sum(tree, node*2, start, (start+end)//2, left, right) + sum(tree, node*2+1, (start+end)//2+1, end, left, right)
+
+n, m, k = map(int, input().split())
+a = [int(input()) for _ in range(n)]
+h = math.ceil(math.log2(n))
+tree_size = (1 << (h+1))
+tree = [0] * tree_size
+
+init(a, tree, 1, 0, n-1)
+
+m += k
+while m > 0:
+    m -= 1
+    inputs = list(map(int, input().split()))
+    if inputs[0] == 1:
+        t2, t3 = inputs[1], inputs[2]
+        t2 -= 1
+        diff = t3 - a[t2]
+        a[t2] = t3
+        update(tree, 1, 0, n-1, t2, diff)
+    elif inputs[0] == 2:
+        t2, t3 = inputs[1], inputs[2]
+        print(sum(tree, 1, 0, n-1, t2-1, t3-1))
