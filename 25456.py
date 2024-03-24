@@ -1,49 +1,68 @@
 from math import cos, sin
+from functools import reduce
+import operator
+MOD = 998244353
+ROOT = 3
 
-def complex_exp(theta):
-    return cos(theta) + 1j * sin(theta)
+def modpow(base, exp, mod=MOD):
+    result = 1
+    while exp > 0:
+        if exp % 2 == 1:
+            result = (result * base) % mod
+        base = (base * base) % mod
+        exp //= 2
+    return result
 
-def fft_manual(a, inverse=False):
-    n = len(a)
-    if n <= 1:
-        return a
-    even = fft_manual(a[0::2], inverse)
-    odd = fft_manual(a[1::2], inverse)
-    T = [0] * n
-    for k in range(n // 2):
-        if inverse:
-            t = complex_exp(2 * 3.141592653589793 * k / n) * odd[k]
-        else:
-            t = complex_exp(-2 * 3.141592653589793 * k / n) * odd[k]
-        T[k] = even[k] + t
-        T[k + n // 2] = even[k] - t
-    return T
+def NTT(v, inv=False):
+    S = len(v)
+    j = 0
+    for i in range(1, S):
+        bit = S // 2
+        while j >= bit:
+            j -= bit
+            bit //= 2
+        j += bit
+        if i < j:
+            v[i], v[j] = v[j], v[i]
 
-def ifft_manual(a):
-    n = len(a)
-    a_inv = fft_manual(a, True)
-    return [x / n for x in a_inv]
+    k = 1
+    while k < S:
+        angle = modpow(ROOT, (MOD - 1) // (2 * k))
+        if inv:
+            angle = modpow(angle, MOD - 2)
+        i = 0
+        while i < S:
+            z = 1
+            for j in range(k):
+                even = v[i + j]
+                odd = v[i + j + k] * z
+                v[i + j] = (even + odd) % MOD
+                v[i + j + k] = (even - odd) % MOD
+                z = (z * angle) % MOD
+            i += k * 2
+        k *= 2
 
-def fft(a, b):
-    n = 1
-    while n < len(a) + len(b) - 1:
-        n <<= 1
-    a.extend([0] * (n - len(a)))
-    b.extend([0] * (n - len(b)))
-    
-    A = fft_manual(a)
-    B = fft_manual(b)
-    C = [A[i] * B[i] for i in range(n)]
-    c = ifft_manual(C)
-    
-    c = [round(x.real) for x in c]
-    
-    while len(c) > 1 and c[-1] == 0:
-        c.pop()
-    return c
+    if inv:
+        n_inv = modpow(S, MOD - 2)
+        for i in range(S):
+            v[i] = (v[i] * n_inv) % MOD
 
-N = int(input())
-x = list(map(int, input().split()))
-y = list(map(int, input().split()))
-y.reverse()
-print(max(fft(x+x, y)))
+def mul(v, u):
+    S = 1
+    while S < 2 * max(len(v), len(u)):
+        S <<= 1
+    v += [0] * (S - len(v))
+    u += [0] * (S - len(u))
+
+    NTT(v, False)
+    NTT(u, False)
+    for i in range(S):
+        v[i] = (v[i] * u[i]) % MOD
+    NTT(v, True)
+
+    return v[:len(v) + len(u) - 1]
+
+m=list(map(int, input().strip()))
+n=list(map(int, input().strip()))
+
+print(max(mul(m,n)))

@@ -23,8 +23,6 @@ N = int(input())
 
 for _ in range(N):
     i,j = map(int, input().split())
-
-
     i = 2 * i + 2
     j = 2 * j + 2
 
