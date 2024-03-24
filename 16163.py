@@ -10,7 +10,7 @@ def manacher(s):
             Z[i] += 1
         if i + Z[i] > right:
             center, right = i, i + Z[i]
-
+    print(Z)
     return sum((z + 1) // 2 for z in Z)
 
 s = input()
