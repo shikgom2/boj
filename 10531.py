@@ -62,10 +62,20 @@ def mul(v, u):
 
     return v[:len(v) + len(u) - 1]
 
-N, M = map(int, input().split())
-x = list(map(int, input().split()))
-y = list(map(int, input().split()))
-res = mul(x,y)
-res = reduce(operator.xor, res)
+m = int(input())
+li = [0] * 200001
+li[0] = 1
+for _ in range(m):
+    i = int(input())
+    li[i] = 1
+t = li
+res = mul(li, t)
 
-print(res)
+n = int(input())
+cnt=0
+for _ in range(n):
+    i = int(input())
+    if(res[i]):
+        cnt += 1
+
+print(cnt)

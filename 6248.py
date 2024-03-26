@@ -19,17 +19,17 @@ def dijkstra(graph, start, end):
 
     return distance[end]
 
-N=int(input())
-M=int(input())
+V,E,X = map(int, input().split())
+graph = [[] for _ in range(V + 1)]
 
-graph = [[] for _ in range(N + 1)]
-
-for _ in range(M):
+for _ in range(E):
     start, end, cost = map(int, input().split())
     graph[start].append((end, cost))
+    graph[end].append((start, cost))
 
-start_city, end_city = map(int, input().split())
 
-result = dijkstra(graph, start_city, end_city)
+res = 0
+for i in range(1, V+1):
+    res = max(res, dijkstra(graph, X, i) + dijkstra(graph, i, X))
 
-print(result)
+print(res)

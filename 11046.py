@@ -1,28 +1,36 @@
 import sys
 input = sys.stdin.readline
 
-def solve(s):
+def manacher(s):
     A = '@#' + '#'.join(s) + '#$'
-    for i in range(1, len(s) // 2 + 1):
-        if s[i-1] != s[-i]:
-            return 0
-    return 1
+    Z = [0] * len(A)
+    center = right = 0
+
+    for i in range(1, len(A) - 1):
+        if i < right:
+            Z[i] = min(right - i, Z[2 * center - i])
+        while A[i + Z[i] + 1] == A[i - Z[i] - 1]:
+            Z[i] += 1
+        if i + Z[i] > right:
+            center, right = i, i + Z[i]
+    return Z
 
 s = input()
 arr = list(map(str, input().split()))
+res = manacher(arr)
+print(res)
 N = int(input())
 
-result = []
-while(True):
-    N -= 1
+for _ in range(N):
     i,j = map(int, input().split())
-    
-    tmp = arr[i-1:j]
+    i = 2 * i + 2
+    j = 2 * j + 2
 
-    result.append(solve(tmp))
+    center = (i + j) // 2
 
-    if(N == 0):
-        break
+    len = (i - j) // 2
 
-for res in result:
-    print(res)
+    if res[center] >= len:
+        print(1)
+    else:
+        print(0)

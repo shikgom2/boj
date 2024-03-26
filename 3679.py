@@ -16,17 +16,11 @@ def convex_hull(positions):
 
 N = int(input())
 for _ in range(N):
-    '''
-    n = int(input())
-    positions = []
-    for _ in range(n):
-        x, y = map(int, input().split())
-        positions.append([x,y])
-    '''
+    
     positions = []
     pos = list(map(int, input().split()))
     for i in range(1, len(pos), 2):
-        positions.append([pos[i], -pos[i+1]])
+        positions.append([pos[i], pos[i+1]])
 
     positions = sorted(positions, key=lambda x: (x[0], x[1]))
     print(positions)

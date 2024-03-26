@@ -19,17 +19,14 @@ def dijkstra(graph, start, end):
 
     return distance[end]
 
-N=int(input())
-M=int(input())
+while(True):
+    V,E,ts,te = map(int, input().split())
+    if(V==0 and E==0 and ts == 0 and te==0):
+        break
+    graph = [[] for _ in range(V + 1)]
 
-graph = [[] for _ in range(N + 1)]
-
-for _ in range(M):
-    start, end, cost = map(int, input().split())
-    graph[start].append((end, cost))
-
-start_city, end_city = map(int, input().split())
-
-result = dijkstra(graph, start_city, end_city)
-
-print(result)
+    for _ in range(E):
+        start, end, cost = map(int, input().split())
+        graph[start].append((end, cost))
+        
+    print(dijkstra(graph, ts, te))

@@ -1,8 +1,9 @@
 import heapq
 
 def dijkstra(graph, start, end):
-    INF = int(1e9)
+    INF = int(1e11)
     distance = [INF] * (len(graph) + 1)
+    prev_node = [-1] * (len(graph) + 1)
     distance[start] = 0
     queue = []
     heapq.heappush(queue, (0, start))
@@ -15,21 +16,29 @@ def dijkstra(graph, start, end):
             cost = dist + next_dist
             if cost < distance[next_node]:
                 distance[next_node] = cost
+                prev_node[next_node] = node
                 heapq.heappush(queue, (cost, next_node))
 
-    return distance[end]
+    path = []
+    current = end
+    while current != -1:
+        path.append(current)
+        current = prev_node[current]
+    path = path[::-1]
+    
+    return distance[end], path
 
-N=int(input())
-M=int(input())
+V = int(input())
+E = int(input())
+graph = [[] for _ in range(V + 1)]
 
-graph = [[] for _ in range(N + 1)]
-
-for _ in range(M):
+for _ in range(E):
     start, end, cost = map(int, input().split())
     graph[start].append((end, cost))
 
-start_city, end_city = map(int, input().split())
+ts, te = map(int, input().split())
 
-result = dijkstra(graph, start_city, end_city)
-
-print(result)
+res = dijkstra(graph, ts, te)
+print(res[0])
+print(len(res[1]))
+print(*res[1])
