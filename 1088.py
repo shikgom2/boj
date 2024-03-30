@@ -14,6 +14,7 @@ print(pq)
 
 mn = min(v)
 res = -pq[0][0] - mn
+print(res)
 
 for _ in range(k):
     val, idx, cnt = heapq.heappop(pq)
