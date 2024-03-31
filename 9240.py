@@ -42,4 +42,5 @@ for i in range(n):
             break
     ans = max(ans, dist(hull[i], hull[r % n]))
 
-print(ans)
+ans = ans ** 0.5
+print(f"{ans:.20f}")
