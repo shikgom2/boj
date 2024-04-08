@@ -1,34 +1,28 @@
 import sys
 input = sys.stdin.readline
 
-l, t = map(int,input().split())
+l, t = map(int, input().split())
 n = int(input())
-ant = []
 ans = []
 
 for _ in range(n):
-    a, b = input().split()
-    ant.append([int(a), b])
+    pos, dir = input().split()
+    pos = int(pos)
 
-for i in ant:
-    if i[1] == "L": #Left
-        dist = t + l - i[0]
-        if dist < l:
-            ans.append(l-dist)
-        else:
-            if (dist//l) % 2 == 1:
-                ans.append(dist%l)
-            else:
-                ans.append(l - dist%l)
+    if dir == "L": #left
+        pos -= t
+    else: #right
+        pos += t
 
-    else: #Right
-        dist = t + i[0]
-        if dist < l:
-            ans.append(dist)
-        else:
-            if (dist // l) % 2 == 1:
-                ans.append(l - dist%l)
-            else:
-                ans.append(dist % l)
+    pos = pos % (2 * l) #get even distance
+
+    if pos > l: #get odd distance
+        pos = 2 * l - pos
+
+    ans.append(pos)
+
 ans.sort()
-print(' '.join(map(str,ans)))
+print(' '.join(map(str, ans)))
+
+
+
