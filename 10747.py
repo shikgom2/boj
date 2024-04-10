@@ -1,63 +1,29 @@
-def failure(pattern):
-    lps = [0] * len(pattern)
-    length = 0
-    
-    i = 1
-    while i < len(pattern):
-        if pattern[i] == pattern[length]:
-            length += 1
-            lps[i] = length
-            i += 1
-        else:
-            if length != 0:
-                length = lps[length - 1]
-            else:
-                lps[i] = 0
-                i += 1
-    return lps
-
-def kmp(text, pattern, lps):
-    i = 0
+def failure(s):
+    n = len(s)
+    f = [0] * n
     j = 0
-    count = 0
-    indices = []
-
-    while i < len(text):
-        if pattern[j] == text[i]:
-            i += 1
+    for i in range(1, n):
+        while j > 0 and s[i] != s[j]:
+            j = f[j-1]
+        if s[i] == s[j]:
             j += 1
-            if j == len(pattern):
-                count += 1
-                indices.append(i - j)
-                j = lps[j - 1]
-        else:
-            if j != 0:
-                j = lps[j - 1]
-            else:
-                i += 1
-    return count, indices
+            f[i] = j
+    return f
 
-def optimized_string_removal(s, bomb):
-    stack = []
-    lps = failure(bomb)
-
-    for char in s:
-        stack.append(char)
-        if len(stack) >= len(bomb) and char == bomb[-1]:
-            if ''.join(stack[-len(bomb):]) == bomb:
-                del stack[-len(bomb):]
-
-    return ''.join(stack)
-
-str_input = input()
-bomb = input()
-
-stack = []
-lps = failure(bomb)
-
-for char in str_input:
-    stack.append(char)
-    if len(stack) >= len(bomb) and char == bomb[-1]:
-        if ''.join(stack[-len(bomb):]) == bomb:
-            del stack[-len(bomb):]
-print(''.join(stack))
+a = input()
+b = input()
+ans = []
+f = failure(b)
+dp = [0] * (len(a) + 1)
+j = 0
+for i in range(len(a)):
+    ans.append(a[i])
+    while j > 0 and a[i] != b[j]:
+        j = f[j-1]
+    if a[i] == b[j]:
+        j += 1
+    if j == len(b):
+        del ans[-len(b):]
+        j = dp[len(ans)]
+    dp[len(ans)] = j
+print(''.join(ans))
