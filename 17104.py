@@ -1,7 +1,7 @@
+import cmath
 import sys
 input = sys.stdin.readline
-from functools import reduce
-import operator
+
 
 MOD = 998244353
 ROOT = 3
@@ -52,10 +52,22 @@ def mul(v, u):
     NTT(vc, True)
     return vc
 
-N, M = map(int, input().split())
-x = list(map(int, input().split()))
-y = list(map(int, input().split()))
-res = mul(x,y)
-res = reduce(operator.xor, res)
+a = [1] * 1000000
 
-print(res)
+for i in range(2, 1000):
+    if a[i]:
+        for j in range(i*i, 1000000, i):
+            a[j] = 0
+
+b = [0] * 500000
+for i in range(3, 1000000, 2):
+    if a[i]:
+        b[i // 2] = 1
+
+c = b.copy()
+res = mul(b,c)
+
+N = int(input())
+for _ in range(N):
+    n = int(input())
+    print(res[n//2-1] // 2 + a[n//2])
