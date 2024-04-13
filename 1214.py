@@ -1,12 +1,17 @@
-d, p, q = map(int, input().split())
-if p < q: 
-    p, q = q, p
+def solution(D, P, Q):
+    if D % P == 0 or D % Q == 0: 
+        return D
 
-ans = 10*15
-for i in range(min(q, d // p + 2)):
-    res = (d - p * i) // q
-    for j in range(max(0, res - 2), res + 3):
-        if p * i + q * j < d:
-            continue
-        ans = min(ans, p * i + q * j)
-print(ans)
+    P, Q = max(P, Q), min(P, Q)
+    mx_P = D // P + 1
+    ans = P * mx_P
+
+    for i in range(mx_P-1, -1, -1):
+        div, mod = divmod((D - (i * P)), Q)
+        if mod == 0: return D 
+        mn_i = (i * P) + ((div + 1) * Q)
+        if ans == mn_i: break
+        ans = min(ans, mn_i)
+    return ans
+d, p, q = map(int, input().split())
+print(solution(d,p,q))
