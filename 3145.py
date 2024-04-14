@@ -1,6 +1,7 @@
 import sys
 input = sys.stdin.readline
 
+
 def dfs(x):
     for i in range(len(graph[x])):
         t = graph[x][i]
@@ -16,15 +17,15 @@ V = 51
 graph = [[] for _ in range(V+1)]
 d = [0] * (V+1)
 
-map = [[] for _ in range(51)]
+m = [[] for _ in range(51)]
 
-i, j = list(map(int, input().split()))
+i, j = map(int, input().split())
 
 for _ in range(i):
-    map[i] = list(map(str, input().split()))
+    m[i] = list(map(str, input().split()))
 
 
-print(map)
+print(m)
 '''
 ans = 0
 for i in range(1, n+ 1):
