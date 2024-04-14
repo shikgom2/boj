@@ -1,14 +1,14 @@
-import sys
-from functools import cmp_to_key
-input = sys.stdin.readline
+from functools import cmp_to_key #조건 정렬 모듈 import
 
-N = int(input())
-arr = input().split()
+n = int(input())
+arr = input().split() #문자열로 입력받자.
 
-arr.sort(key=cmp_to_key(lambda x, y: int(x + y) - int(y + x)), reverse=True)
+arr.sort(key=cmp_to_key(lambda x, y: int(x + y) - int(y + x)), reverse=True) #>0:x,y<0:y,x
 
-answer = ''.join(arr).lstrip('0')
-if(answer == ""):
+ans = ''.join(arr).lstrip('0') #예외처리
+if(ans == ""):
     print(0)
 else:
-    print(answer)
+    print(ans)
+
+
