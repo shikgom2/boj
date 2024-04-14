@@ -106,27 +106,39 @@ def guess_nth_term(x, n):
     
     return get_nth(v, x, n)
 
-def solve(n):
+def solve(t):
     MOD = 998244353
+    queries = [] 
+    for i in range(1, t+1):
+        queries.append(i)
 
-    total_count = 0
-    for m in range(1, n + 1):
-        valid_counts = set()
-        for x in range(m):
-            for y in range(m):
-                a = (x**2 + y**2) % m
-                b = (x * y) % m
-                valid_counts.add((a, b))
-        total_count += len(valid_counts)
-        total_count %= MOD
-    return total_count
+    max_n = max(queries)
     
-    return total_count
+    count_valid = [0] * (max_n + 1)
+    for m in range(1, max_n + 1):
+        for a in range(m):
+            for b in range(m):
+                found = False
+                for x in range(m):
+                    for y in range(m):
+                        if (x*x + y*y) % m == a and (x*y) % m == b:
+                            found = True
+                            break
+                    if found:
+                        break
+                if found:
+                    count_valid[m] += 1
+    
+    for i in range(1, max_n + 1):
+        count_valid[i] += count_valid[i - 1]
+    
+    results = []
+    for n in queries:
+        results.append(int(count_valid[n] % MOD))
 
-li = []
-for i in range(1, 11):
-    li.append(solve(i))
+    return results
 
+li = solve(31) 
 t = int(input())
 for _ in range(t):
     i = int(input())
