@@ -35,27 +35,15 @@ for _ in range(t):
         sports.append(li[3])
     
     for i in range(n):
-        for j in range(n):
-            if(i == j):
-                dddd=0
-            elif((abs(height[i] - height[j]) < 40) and
-                 (gender[i] != gender[j]) and
-                 (music[i] == music[j]) and
-                 (sports[i] != sports[j])):
-                graph[i+1].append(j+1)
-    
-    print(graph)
-    
-    ans = 0
-    for i in graph:
-        ans = max(ans, len(i))
-    print(ans)
-    '''
+        if gender[i] == "M":
+            for j in range(n):
+                if gender[i] != gender[j] and abs(height[i] - height[j]) <= 40 and \
+                music[i] == music[j] and sports[i] != sports[j]:
+                    graph[i+1].append(j)    
     ans = 0
     for i in range(1, n+ 1):
         c = [False] * (V+1)
         if dfs(i):
             ans += 1
 
-    print(ans)
-    '''
+    print(n-ans)
