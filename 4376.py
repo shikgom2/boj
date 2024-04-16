@@ -49,4 +49,4 @@ while(True):
         if dfs(i):
             ans += 1
 
-    print(ans)
+    print(n-ans)
