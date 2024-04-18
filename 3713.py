@@ -37,8 +37,7 @@ for _ in range(t):
     for i in range(n):
         if gender[i] == "M":
             for j in range(n):
-                if gender[i] != gender[j] and abs(height[i] - height[j]) <= 40 and \
-                music[i] == music[j] and sports[i] != sports[j]:
+                if gender[i] != gender[j] and abs(height[i] - height[j]) <= 40 and music[i] == music[j] and sports[i] != sports[j]:
                     graph[i+1].append(j)    
     ans = 0
     for i in range(1, n+ 1):

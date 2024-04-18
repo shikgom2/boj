@@ -106,41 +106,55 @@ def guess_nth_term(x, n):
     
     return get_nth(v, x, n)
 
-def solve(t):
-    MOD = 998244353
-    queries = [] 
-    for i in range(1, t+1):
-        queries.append(i)
-
-    max_n = max(queries)
+def precompute(max_n):
+    # Initialize counts
+    valid_counts = [0] * (max_n + 1)
     
-    count_valid = [0] * (max_n + 1)
+    # Calculate for each modulus m
     for m in range(1, max_n + 1):
-        for a in range(m):
-            for b in range(m):
-                found = False
-                for x in range(m):
-                    for y in range(m):
-                        if (x*x + y*y) % m == a and (x*y) % m == b:
-                            found = True
-                            break
-                    if found:
-                        break
-                if found:
-                    count_valid[m] += 1
+        count = 0
+        # Dictionary to count occurrences of (a, b)
+        pairs_count = {}
+        
+        # Check all pairs (x, y) modulo m
+        for x in range(m):
+            for y in range(m):
+                a = (x * x + y * y) % m
+                b = (x * y) % m
+                # Use a tuple (a, b) to count occurrences modulo m
+                if (a, b) in pairs_count:
+                    pairs_count[(a, b)] += 1
+                else:
+                    pairs_count[(a, b)] = 1
+
+        # Sum all unique (a, b) combinations
+        count = len(pairs_count)
+        
+        # Store the result for this m
+        valid_counts[m] = count
     
-    for i in range(1, max_n + 1):
-        count_valid[i] += count_valid[i - 1]
+    return valid_counts
+
+def solve(test_cases, max_n):
+    valid_counts = precompute(max_n)
     
     results = []
-    for n in queries:
-        results.append(int(count_valid[n] % MOD))
-
+    for n in test_cases:
+        result = sum(valid_counts[1:n+1]) % mod
+        results.append(result)
+    
     return results
 
-li = solve(31) 
+li = []
+for i in range(1,101):
+    li.append(i)
+
+max_n = max(li)
+
+res = solve(li, max_n)
+
 t = int(input())
 for _ in range(t):
     i = int(input())
-    ans = guess_nth_term(li, i-1)
+    ans = guess_nth_term(res, i-1)
     print(ans)
