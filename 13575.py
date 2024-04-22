@@ -53,8 +53,6 @@ def mul(v, u):
     return vc
 
 N,M= map(int, input().split())
-
-
 v = [0] * 1024
 
 l = list(map(int, input().split()))
