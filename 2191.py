@@ -17,7 +17,7 @@ V = 1000
 graph = [[] for _ in range(V+1)]
 d = [0] * (V+1)
 
-n,m,s,v = map(int, input().split())
+n,m,v = map(int, input().split())
 
 rat = []
 for _ in range(n):
