@@ -12,7 +12,7 @@ def dfs(x):
             return True
     return False
 
-V = 10001
+V = 101
 graph = [[] for _ in range(V+1)]
 d = [0] * (V+1)
 
