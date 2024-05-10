@@ -12,7 +12,7 @@ timeline = [0] * 1000001
 for i in li:
     timeline[i] = 1
 
-#각 손님별로 쿼리
+#각 손님별로 테스트
 for t in li:
     #1. (현재 시간 ~ 손님 오는 시간 - m) 까지 togi 제작
     while(time < t - m):

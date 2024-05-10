@@ -9,4 +9,5 @@ x = math.sqrt(d * d - r * r)
 
 if x < 1 and d >= 1:
     ans = max(ans, r + 1)
-print("{:.12f}".format(ans))
+
+print(f"{ans:.12f}")
