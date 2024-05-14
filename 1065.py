@@ -2,7 +2,6 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-
 cnt = 0
 tmp1 = 0
 tmp2 = 0
