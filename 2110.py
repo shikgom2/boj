@@ -5,7 +5,7 @@ n, c = map(int, (input().split()))
 li = [int(input()) for _ in range(n)]
 
 def solved(d):
-    count = 1
+    count = 1   
     cur_house = li[0]
     for i in range(1, n):
         if cur_house + d <= li[i]: 

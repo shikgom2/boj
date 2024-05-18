@@ -43,6 +43,7 @@ def bfs():
                             check[x][y] = True
                     #Case 4. 탐색을 했는데, 열쇠 일 때, (알파벳 소문자)
                     elif(board[x][y].islower()):
+                        #key배열에 키를 추가한 다음, 싹다 초기화 후 그 좌표부터 다시 탐색
                         keys[ord(board[x][y].lower()) - 97] = True
                         board[x][y] = '.'
                         check = [[False] * w for _ in range(h)]

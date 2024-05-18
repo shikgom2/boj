@@ -5,7 +5,8 @@
         "regex": "cpp",
         "iosfwd": "cpp",
         "vector": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "iostream": "cpp"
     },
     "python.testing.unittestArgs": [
         "-v",
