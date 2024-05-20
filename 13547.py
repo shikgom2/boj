@@ -31,12 +31,13 @@ n = int(input())
 li = list(map(int, input().split()))
 sq = int(sqrt(n))
 m = int(input())
-y = []
+query = []
+
 for _ in range(m):
     q1, q2 = map(int, input().split())
-    y.append(Query(q1 - 1, q2 - 1, len(y)))
+    query.append(Query(q1 - 1, q2 - 1, len(y)))
 
-y.sort(reverse=True)
+query.sort(reverse=True)
 
 b = [0] * (mem * 11)
 res = 0
@@ -44,7 +45,7 @@ s, e = 0, 0
 add(li[0])
 ans = [0] * m
 
-for q in y:
+for q in query:
     ns, ne = q.l, q.r
     for i in range(s, ns):
         sub(li[i])
