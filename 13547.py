@@ -1,61 +1,62 @@
 import sys
 input = sys.stdin.readline
-from math import sqrt
+import math
+from collections import defaultdict
 
-mem = 100007
+class Mo:
+    def __init__(self, array, queries):
+        self.array = array
+        self.queries = queries
+        self.block_size = int(math.sqrt(len(array)))
+        self.results = [0] * len(queries)
+        self.freq = defaultdict(int)
+        self.current_unique_count = 0
 
-class Query:
-    def __init__(self, l, r, k):
-        self.l = l
-        self.r = r
-        self.k = k
+    def add(self, idx):
+        val = self.array[idx]
+        if self.freq[val] == 0:
+            self.current_unique_count += 1
+        self.freq[val] += 1
 
-    def __lt__(self, other):
-        if self.l // sq == other.l // sq:
-            return self.r > other.r
-        return self.l // sq > other.l // sq
+    def remove(self, idx):
+        val = self.array[idx]
+        if self.freq[val] == 1:
+            self.current_unique_count -= 1
+        self.freq[val] -= 1
 
-def add(g):
-    global res, b
-    b[g] += 1
-    if b[g] == 1:
-        res += 1
-
-def sub(g):
-    global res, b
-    b[g] -= 1
-    if b[g] == 0:
-        res -= 1
+    def process_queries(self):
+        queries = sorted(enumerate(self.queries), key=lambda x: (x[1][0] // self.block_size, x[1][1]))
+        current_l, current_r = 0, 0
+        
+        for i, (l, r) in queries:
+            while current_r <= r:
+                self.add(current_r)
+                current_r += 1
+            while current_r > r + 1:
+                current_r -= 1
+                self.remove(current_r)
+            while current_l < l:
+                self.remove(current_l)
+                current_l += 1
+            while current_l > l:
+                current_l -= 1
+                self.add(current_l)
+                
+            self.results[i] = self.current_unique_count
+        
+        return self.results
 
 n = int(input())
 li = list(map(int, input().split()))
-sq = int(sqrt(n))
-m = int(input())
-query = []
+q = int(input())
 
-for _ in range(m):
-    q1, q2 = map(int, input().split())
-    query.append(Query(q1 - 1, q2 - 1, len(y)))
+queries = []
+for _ in range(q):
+    i, j = map(int, input().split())
+    queries.append((i-1,j-1))
 
-query.sort(reverse=True)
+mo = Mo(li, queries)
+ans = mo.process_queries()
 
-b = [0] * (mem * 11)
-res = 0
-s, e = 0, 0
-add(li[0])
-ans = [0] * m
-
-for q in query:
-    ns, ne = q.l, q.r
-    for i in range(s, ns):
-        sub(li[i])
-    for i in range(s - 1, ns - 1, -1):
-        add(li[i])
-    for i in range(e + 1, ne + 1):
-        add(li[i])
-    for i in range(e, ne, -1):
-        sub(li[i])
-    s, e = ns, ne
-    ans[q.k] = res
-
-print(*ans, sep='\n')
+for a in ans:
+    print(a)
