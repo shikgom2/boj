@@ -1,0 +1,1 @@
+{"name":"Local: 12837","url":"c:\\Users\\Carly\\Documents\\GitHub\\boj\\12837.py","tests":[{"id":1716539490950,"input":"10 6\n1 3 10000\n1 4 -5000\n1 7 -3000\n2 1 10\n1 6 35000\n2 4 10","output":"2000\n27000"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\Carly\\Documents\\GitHub\\boj\\12837.py","group":"local","local":true}
