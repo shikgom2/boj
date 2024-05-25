@@ -51,10 +51,9 @@ for i in range(1, n + 1):
         ans += 1
 #print(ans)
 
-
-if(ans != N):
+res.sort()
+if(len(res) != N):
     print(-1)
 else:
-    res = sorted(res, reverse=True)
     for r in res:
         print(li[r-1], end=" ")

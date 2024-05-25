@@ -2,7 +2,7 @@ import sys
 input = sys.stdin.readline
 from math import sqrt
 
-mem = 10000007
+mem = 100007
 
 class Query:
     def __init__(self, l, r, k):
@@ -27,8 +27,17 @@ def sub(g):
     if b[g] == 0:
         res -= 1
 
+def compress(arr):
+    s = sorted(set(arr))
+    v = {value: idx for idx, value in enumerate(s)}
+    return [v[value] for value in arr]
+
+
 n = int(input())
 li = list(map(int, input().split()))
+li = compress(li)
+
+
 sq = int(sqrt(n))
 m = int(input())
 query = []
@@ -39,7 +48,6 @@ for _ in range(m):
 
 query.sort(reverse=True)
 
-#존재하는 서로 다른 수 갯수 출력
 b = [0] * (mem * 11)
 res = 0
 s, e = 0, 0

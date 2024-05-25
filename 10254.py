@@ -28,7 +28,7 @@ def rotating_calipers(points):
     if n == 2: return hull[0], hull[1]
 
     k = 1
-    max_dist = 0
+    max_dist = distance_sq(hull[0], hull[1])
     pair = (hull[0], hull[1])
     for i in range(n):
         while True:
@@ -42,6 +42,9 @@ def rotating_calipers(points):
             k = (k + 1) % n
     return pair
 
+def distance_sq(p1, p2):
+    return (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2
+
 t = int(input())
 for _ in range(t):
     n = int(input())
@@ -51,9 +54,10 @@ for _ in range(t):
         points.append((x, y))
 
     hull = convex_hull(points)
-    diameter_points = rotating_calipers(hull)
+    
+    if len(hull) >= 2 and distance_sq(hull[0], hull[1]) == max(distance_sq(hull[i], hull[j]) for i in range(len(hull)) for j in range(i + 1, len(hull))):
+        ans = (hull[0], hull[1])
+    else:
+        ans = rotating_calipers(hull)
 
-    print(len(hull))
-    for p in hull:
-        print(p[0], p[1])
-    print(f"{diameter_points[0][0]} {diameter_points[0][1]} {diameter_points[1][0]} {diameter_points[1][1]}")
+    print(f"{ans[0][0]} {ans[0][1]} {ans[1][0]} {ans[1][1]}")
