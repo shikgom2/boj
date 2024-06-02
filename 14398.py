@@ -42,8 +42,8 @@ graph = [[] for _ in range(n+1)]
 
 for i in range(len(odd)):
     for j in range(len(even)):
-        if(gcd(odd[i], even[j]) == 1 and test(odd[i]**2 + even[j]**2)):
-            graph[i].append(j)
+        if(gcd(odd[i], even[j]) == 1 and test(odd[i]*odd[i] + even[j]*even[j])):
+            graph[i+1].append(j+1)
 
 ans = 0
 for i in range(1, n + 1):
