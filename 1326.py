@@ -9,7 +9,6 @@ q = deque()
 q.append((s,1))
 visited[s] = 1
 
-
 while (q):
     x, y = q.popleft()
     cur = li[x-1]

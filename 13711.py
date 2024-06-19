@@ -35,6 +35,5 @@ y = list(map(str, input().split()))
 x = ''.join(x)
 y = ''.join(y)
 
-print(x)
 lcs = hirschberg(x,y)
 print(len(lcs))

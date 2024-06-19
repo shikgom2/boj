@@ -23,18 +23,15 @@ def convex_hull(graph):
     
     return lower[:-1] + upper[:-1]
 
-def rotating_calipers_min(graph: list):
+def rotating_calipers(graph: list):
     if len(graph) == 2:
         return math.sqrt(distance(graph[0], graph[1])), (graph[0], graph[1])
     
     hull = convex_hull(graph)
     length = len(hull)
 
-    if length < 2:
-        return 0, ((0, 0), (0, 0))
-
-    result = float('inf')
-    closest_points = (hull[0], hull[1])
+    result = 0
+    farthest_points = (hull[0], hull[1])
     j = 1
 
     for i in range(length):
@@ -54,14 +51,14 @@ def rotating_calipers_min(graph: list):
         dist_i_j = distance(hull[i], hull[j])
         dist_next_i_j = distance(hull[next_i], hull[j])
         
-        if dist_i_j < result:
+        if dist_i_j > result:
             result = dist_i_j
-            closest_points = (hull[i], hull[j])
-        if dist_next_i_j < result:
+            farthest_points = (hull[i], hull[j])
+        if dist_next_i_j > result:
             result = dist_next_i_j
-            closest_points = (hull[next_i], hull[j])
+            farthest_points = (hull[next_i], hull[j])
     
-    return math.sqrt(result), closest_points
+    return math.sqrt(result), farthest_points
 
 n = int(input())
 graph = []
@@ -72,6 +69,6 @@ for _ in range(n):
 
 graph = list(set(graph))
 
-ans, points = rotating_calipers_min(graph)
-print(ans)
+ans, points = rotating_calipers(graph)
+#print(ans)
 print(points[0][0], points[0][1], points[1][0], points[1][1])

@@ -1,40 +1,48 @@
 import math
 
-def ccw(x1, y1, x2, y2, x3, y3):
-    c = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)
-    return c > 0
+def ccw(p1, p2, p3):
+    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
 
-def convex_hull(positions):
-    convex = []
-    for p3 in positions:
-        while len(convex) >= 2:
-            p1, p2 = convex[-2], convex[-1]
-            if ccw(*p1, *p2, *p3):
-                break
-            convex.pop()
-        convex.append(p3)
 
-    return convex
+def convex_hull(graph):
+    graph = sorted(set(graph))
+
+    lower = []
+    for i in graph:
+        while len(lower) >= 2 and ccw(lower[-2], lower[-1], i) <= 0:
+            lower.pop()
+        lower.append(i)
+        
+    upper = []
+    for i in reversed(graph):
+        while len(upper) >= 2 and ccw(upper[-2], upper[-1], i) <= 0:
+            upper.pop()
+        upper.append(i)
+    
+    return lower[:-1] + upper[:-1]
 
 def distance(p1, p2):
     return math.sqrt((p2[0] - p1[0])**2 + (p2[1] - p1[1])**2)
 
+def solve(vertices):
+    n = len(vertices)
+    area = 0
+
+    for i in range(n):
+        j = (i + 1) % n
+        area += vertices[i][0] * vertices[j][1]
+        area -= vertices[i][1] * vertices[j][0]
+    
+    return abs(area) / 2
+
 n = int(input())
-positions = []
+graph = []
 
 for _ in range(n):
     li = list(map(str, input().split()))
-    positions.append([int(li[0]), int(li[1])])
+    graph.append((int(li[0]), int(li[1])))
 
-positions = sorted(positions, key=lambda x: (x[0], x[1]))
-low = convex_hull(positions)
-up = convex_hull(positions[::-1])
+graph.sort()
 
-convex = low[:-1] + up[:-1]
-
-dist = 0
-for i in range(len(convex)):
-    next_index = (i + 1) % len(convex)
-    dist += distance(convex[i], convex[next_index])
-print(f"{dist:.2f}")
-    
+convex = convex_hull(graph)
+print(int(solve(convex)//50))

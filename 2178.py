@@ -16,7 +16,7 @@ def bfs(x, y, li, visited):
             if nx < 0 or nx >= e or ny < 0 or ny >= v:
                 continue
 
-            print(nx, ny)
+            #print(nx, ny)
 
             if(nx == (e-1) and ny == (v-1)):
                 print(z+1)
