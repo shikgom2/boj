@@ -1,46 +1,64 @@
-import sys
-input = sys.stdin.readline
+import math
 
-def ccw(p1, p2, p3):
-    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
+def CCW(a, b, c):
+    return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
 
-def dist(A, B):
-    dx = A[0] - B[0]
-    dy = A[1] - B[1]
-    return dx*dx + dy*dy
+def distance(a: list, b: list) -> int:
+    return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2
 
-def convex_hull(points):
-    points = sorted(points)
+def convex_hull(graph):
+    graph = sorted(set(graph))
+
     lower = []
-    for p in points:
-        while len(lower) >= 2 and ccw(lower[-2], lower[-1], p) < 0:
+    for i in graph:
+        while len(lower) >= 2 and CCW(lower[-2], lower[-1], i) <= 0:
             lower.pop()
-        lower.append(p)
+        lower.append(i)
+        
     upper = []
-    for p in reversed(points):
-        while len(upper) >= 2 and ccw(upper[-2], upper[-1], p) < 0:
+    for i in reversed(graph):
+        while len(upper) >= 2 and CCW(upper[-2], upper[-1], i) <= 0:
             upper.pop()
-        upper.append(p)
+        upper.append(i)
+    
     return lower[:-1] + upper[:-1]
 
+def rotating_calipers(graph: list) -> float:
+    if len(graph) == 2:
+        return math.sqrt(distance(graph[0], graph[1]))
+    
+    hull = convex_hull(graph)
+    length = len(hull)
+
+    result = 0
+    j = 1
+
+    for i in range(length):
+        next_i = (i+1) % length
+
+        while True:
+            next_j = (j+1) % length 
+
+            d1 = CCW(hull[i], hull[next_i], hull[j])
+            d2 = CCW(hull[i], hull[next_i], hull[next_j])
+
+            if d1 < d2:
+                j = next_j
+            else:
+                break
+       
+        result = max(result, distance(hull[i], hull[j]), distance(hull[next_i], hull[j]))
+    
+    return math.sqrt(result)
+
 n = int(input())
-points = []
+graph = []
+
 for _ in range(n):
     x, y = map(int, input().split())
-    points.append((x, y))
+    graph.append((x, y))
 
-hull = convex_hull(points)
+graph = list(set(graph))
 
-r = 0
-ans = 0
-n = len(hull)
-for i in range(n):
-    while ccw(hull[i], hull[(i + 1) % n], (hull[(i + 1) % n][0] + hull[(r + 1) % n][0] - hull[r % n][0], hull[(i + 1) % n][1] + hull[(r + 1) % n][1] - hull[r % n][1])) >= 0:
-        ans = max(ans, dist(hull[i], hull[r % n]))
-        r += 1
-        if r >= n * 2:
-            break
-    ans = max(ans, dist(hull[i], hull[r % n]))
-
-ans = ans ** 0.5
-print(f"{ans:.20f}")
+ans = rotating_calipers(graph)
+print(ans)
