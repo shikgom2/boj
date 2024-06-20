@@ -1,39 +1,35 @@
-def ccw(x1, y1, x2, y2, x3, y3):
-    c = (x2 - x1) * (y3 - y1) - (y2 - y1) * (x3 - x1)
-    return c > 0
+import sys
+input = sys.stdin.readline
 
-def convex_hull(positions):
-    convex = []
-    for p3 in positions:
-        while len(convex) >= 2:
-            p1, p2 = convex[-2], convex[-1]
-            if ccw(*p1, *p2, *p3):
-                break
-            convex.pop()
-        convex.append(p3)
+def ccw(p1, p2, p3):
+    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
 
-    return convex
+def convex_hull(graph):
+    graph = sorted(set(graph))
 
-N = int(input())
-for _ in range(N):
+    lower = []
+    for i in graph:
+        while len(lower) >= 2 and ccw(lower[-2], lower[-1], i) <= 0:
+            lower.pop()
+        lower.append(i)
+        
+    upper = []
+    for i in reversed(graph):
+        while len(upper) >= 2 and ccw(upper[-2], upper[-1], i) <= 0:
+            upper.pop()
+        upper.append(i)
     
-    positions = []
-    pos = list(map(int, input().split()))
-    for i in range(1, len(pos), 2):
-        positions.append([pos[i], pos[i+1]])
+    return lower[:-1] + upper[:-1]
 
-    positions = sorted(positions, key=lambda x: (x[0], x[1]))
-    print(positions)
+t = int(input())
+for _ in range(t):
+    points = []
+    li = list(map(int, input().split()))
 
-    low = convex_hull(positions)
-    up = convex_hull(positions[::-1])
+    for i in range(1, li[0], 2):
+        points.append((int(li[i]), int(li[i+1])))
+    #points.append([int(li[0]), int(li[1])])
 
-    convex = low[:-1] + up[:-1]
-    top_left = min(convex, key=lambda p: (p[1], p[0]))
-
-    top_left_index = convex.index(top_left)
-    convex = convex[top_left_index:] + convex[:top_left_index]
-
-    print(len(convex))
-    for i in convex:
-        print(i[0], -i[1])
+    print(len(convex_hull(points)))
+    for p in convex_hull(points):
+        print(p[0], p[1])
