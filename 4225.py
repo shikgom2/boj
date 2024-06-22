@@ -1,77 +1,56 @@
+import sys
+input = sys.stdin.readline
 import math
 
-def CCW(a, b, c):
-    return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
-
-def distance(a: list, b: list) -> int:
-    return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2
+def ccw(p1, p2, p3):
+    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
 
 def convex_hull(graph):
     graph = sorted(set(graph))
 
     lower = []
     for i in graph:
-        while len(lower) >= 2 and CCW(lower[-2], lower[-1], i) <= 0:
+        while len(lower) >= 2 and ccw(lower[-2], lower[-1], i) <= 0:
             lower.pop()
         lower.append(i)
         
     upper = []
     for i in reversed(graph):
-        while len(upper) >= 2 and CCW(upper[-2], upper[-1], i) <= 0:
+        while len(upper) >= 2 and ccw(upper[-2], upper[-1], i) <= 0:
             upper.pop()
         upper.append(i)
     
     return lower[:-1] + upper[:-1]
 
-def rotating_calipers_min(graph: list):
-    if len(graph) == 2:
-        return math.sqrt(distance(graph[0], graph[1])), (graph[0], graph[1])
-    
-    hull = convex_hull(graph)
-    length = len(hull)
+def distance(target, p0, p1) :
+    if p0[0] == p1[0] :
+        return abs(target[0] - p0[0])
+    if p0[1] == p1[1] :
+        return abs(target[1] - p0[1])
+    a, b = (p1[1] - p0[1]) / (p1[0] - p0[0]), -1
+    c = -a * p0[0] + p0[1]
+    return abs( a*target[0] + b*target[1] + c ) / (a**2 + b**2) ** 0.5
 
-    if length < 2:
-        return 0, ((0, 0), (0, 0))
+t = 0
+while(True):
+    t += 1
+    n = int(input())
+    if(n == 0):
+        exit()
 
-    result = float('inf')
-    closest_points = (hull[0], hull[1])
-    j = 1
+    points = []
+    for _ in range(n):
+        li = list(map(str, input().split()))
+        points.append((int(li[0]), int(li[1])))
 
-    for i in range(length):
-        next_i = (i + 1) % length
+    hull = convex_hull(points)
 
-        while True:
-            next_j = (j + 1) % length 
+    ans = 10 ** 10
+    for i in range(len(hull)):
+        k = (i + 1) % len(hull)
+        tmp = 0
+        for j in range(len(hull)) :
+            tmp = max(tmp, distance(hull[j], hull[i], hull[k]))
+        ans = min(ans, tmp)
 
-            d1 = CCW(hull[i], hull[next_i], hull[j])
-            d2 = CCW(hull[i], hull[next_i], hull[next_j])
-
-            if d1 < d2:
-                j = next_j
-            else:
-                break
-
-        dist_i_j = distance(hull[i], hull[j])
-        dist_next_i_j = distance(hull[next_i], hull[j])
-        
-        if dist_i_j < result:
-            result = dist_i_j
-            closest_points = (hull[i], hull[j])
-        if dist_next_i_j < result:
-            result = dist_next_i_j
-            closest_points = (hull[next_i], hull[j])
-    
-    return math.sqrt(result), closest_points
-
-n = int(input())
-graph = []
-
-for _ in range(n):
-    x, y = map(int, input().split())
-    graph.append((x, y))
-
-graph = list(set(graph))
-
-ans, points = rotating_calipers_min(graph)
-print(ans)
-print(points[0][0], points[0][1], points[1][0], points[1][1])
+    print('Case {:d}: {:0.02f}'.format(t, math.ceil(ans*100) / 100.0))
