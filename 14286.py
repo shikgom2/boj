@@ -42,12 +42,14 @@ def edmonds_karp(graph, source, sink):
 
     return max_flow
 
-graph = [[0 for _ in range(100)] for _ in range(100)]
+n,m = map(int, input().split())
 
-n = int(input())
-for _ in range(n):
-    s, e, v = map(str, input().split())
-    graph[ord(s)-ord('A')][ord(e)-ord('A')] += int(v)
-    graph[ord(e)-ord('A')][ord(s)-ord('A')] += int(v)
+graph = [[0 for _ in range(n+1)] for _ in range(n+1)]
 
-print(edmonds_karp(graph, 0, 25))
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    graph[a][b] = c
+    graph[b][a] = c
+
+s, t= map(int, input().split())
+print(edmonds_karp(graph, s, t))
