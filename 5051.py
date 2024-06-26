@@ -1,7 +1,6 @@
+import cmath
 import sys
 input = sys.stdin.readline
-from functools import reduce
-import operator
 
 MOD = 998244353
 ROOT = 3
@@ -52,11 +51,27 @@ def mul(v, u):
     NTT(vc, True)
     return vc
 
-N, M = map(int, input().split())
-x = list(map(int, input().split()))
-y = list(map(int, input().split()))
 
-res = mul(x,y)
-res = reduce(operator.xor, res)
+n = int(input())
+tmp = [0] * n
+sq = [0] * n
 
-print(res)
+for i in range(1, n):
+    tmp[(i * i) % n] += 1
+    sq[(2 * i * i) % n] += 1
+
+li = [0] * n
+
+for i in range(n):
+    li[i] = tmp[i].real
+    
+res = mul(li, li)
+
+ans = 0
+for i in range(1, n):
+    k = (i * i) % n
+    total = res[k].real + res[n + k].real
+    eq = sq[k]
+    ans += (total - eq) // 2 + eq
+    
+print(int(ans))

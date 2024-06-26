@@ -52,11 +52,34 @@ def mul(v, u):
     NTT(vc, True)
     return vc
 
-N, M = map(int, input().split())
-x = list(map(int, input().split()))
-y = list(map(int, input().split()))
+    
+n, l, m, w = map(int, input().split())
 
-res = mul(x,y)
-res = reduce(operator.xor, res)
+sky = []
+scope = []
 
-print(res)
+for i in range(m):
+    sky.append(list(map(int, input().split())))
+
+vinvert = [[] for _ in range(m)]
+
+for i in range(m):
+    li = list(map(int, input().split()))
+    scope.append(li)
+    vinvert[i] = [li[l - j - 1] for j in range(l)]
+
+convolution = []
+
+for i in range(m):
+    convolution.append(mul(sky[i], vinvert[i]))
+
+ans = 0
+
+for i in range(n - l + 1):
+    s = 0
+    for j in range(m):
+        s += convolution[j][l + i - 1]
+    if s > w:
+        ans += 1
+
+print(ans)
