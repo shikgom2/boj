@@ -11,7 +11,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./아카이브",
+        ".",
         "-p",
         "*test.py"
     ],
