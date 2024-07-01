@@ -1,36 +1,38 @@
 import sys
 input = sys.stdin.readline
 
-def manacher(s):
-    A = '@#' + '#'.join(s) + '#$'
-    Z = [0] * len(A)
-    center = right = 0
+def mamacher(li):
+    l = 2 * len(li) + 2
+    nums = [-1] * l
+    for i in range(1, len(li) + 1):
+        nums[2 * i] = li[i - 1]
+        
+    A = [0] * l
+    b, c = 0, 0
 
-    for i in range(1, len(A) - 1):
-        if i < right:
-            Z[i] = min(right - i, Z[2 * center - i])
-        while A[i + Z[i] + 1] == A[i - Z[i] - 1]:
-            Z[i] += 1
-        if i + Z[i] > right:
-            center, right = i, i + Z[i]
-    return Z
+    for i in range(1, l):
+        if i > b:
+            A[i] = 0
+        else:
+            A[i] = min(A[2 * c - i], b - i)
+        
+        while i - A[i] - 1 > 0 and i + A[i] + 1 < l and nums[i - A[i] - 1] == nums[i + A[i] + 1]:
+            A[i] += 1
+        
+        if i + A[i] > b:
+            b = i + A[i]
+            c = i
+    return A
 
-s = input()
-arr = list(map(str, input().split()))
-res = manacher(arr)
-print(res)
-N = int(input())
+l = int(input())
+li = list(map(int, input().split()))
+ans = mamacher(li)
 
-for _ in range(N):
-    i,j = map(int, input().split())
-    i = 2 * i + 2
-    j = 2 * j + 2
+t = int(input())
 
-    center = (i + j) // 2
-
-    len = (i - j) // 2
-
-    if res[center] >= len:
+for _ in range(t):
+    s, e = map(int, input().split())
+    if ans[s + e] > e - s:
         print(1)
     else:
         print(0)

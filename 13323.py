@@ -7,6 +7,7 @@ li = list(map(int, input().split()))
 pq = []
 ans = 0
 
+        
 for i in range(n):
     li[i] -= i
     heapq.heappush(pq, -li[i]) #maximum heapq
