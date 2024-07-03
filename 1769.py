@@ -5,7 +5,7 @@ while(True):
     if(len(li) == 1):
         print(ans)
 
-        if(li[0] == '3' or li[0] == '6' or li[0] == '9'):
+        if(li[0] == 3 or li[0] == 6 or li[0] == 9):
             print("YES")
         else:
             print("NO")
