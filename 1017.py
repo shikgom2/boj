@@ -2,7 +2,6 @@ import sys
 input = sys.stdin.readline
 import math
 
-res = []
 def dfs(x):
     for i in range(len(graph[x])):
         t = graph[x][i]
@@ -11,9 +10,6 @@ def dfs(x):
         c[t] = True
         if d[t] == 0 or dfs(d[t]):
             d[t] = x
-
-            if(x == 1):
-                res.append(t)
             return True
     return False
 
@@ -31,29 +27,69 @@ for i in range(2, int(math.sqrt(n)) + 1):
 N = int(input())
 li = list(map(int, input().split()))
 
-V = 2002
+V = 2001
 graph = [[] for _ in range(V+1)]
 d = [0] * (V+1)
          
-for i in range(len(li)):
-    for j in range(len(li)):
-        if(i==j):
-            continue
-        else:
-            if(array[li[i] + li[j]] == True):
-                graph[i+1].append(j+1)
+odd = []
+even = []
 
+if(li[0] % 2):
+    flag = 0
+else:
+    flag = 1 #even
+
+for i in range(len(li)):
+    #지금 코드가 odd 기준이니까... 첫수가 짝일때 그에맞게
+    if(flag):
+        if(li[i] % 2 == 0):
+            odd.append(li[i])
+        else:
+            even.append(li[i])
+    else:
+        if(li[i] % 2 == 0):
+            even.append(li[i])
+        else:
+            odd.append(li[i])
+
+
+for i in range(len(odd)):
+    for j in range(len(even)):
+        if(array[odd[i] + even[j]]):
+            graph[i+1].append(j+1)
 #print(graph)
-ans = 0
-for i in range(1, n + 1):
-    c = [False] * (V+1)
-    if dfs(i):
-        ans += 1
-#print(ans)
+
+arr = graph[1].copy()
+graph[1] = []
+
+res = []
+for i in range(len(arr)):
+    del_list = []
+    tmp = arr[i]
+
+    for j in range(len(graph)):
+        for k in range(len(graph[j])):
+            if(graph[j][k] == tmp):
+                del graph[j][k]
+                del_list.append(j)
+                break
+    #print(graph)
+
+    ans = 0
+    for z in range(1, n + 1):
+        c = [False] * (V+1)
+        if dfs(z):
+            ans += 1
+
+    if(ans >= 1):
+        res.append(even[arr[i]-1])
+
+    for a in del_list:
+        graph[a].append(tmp)
+        graph[a].sort()
 
 res.sort()
-if(len(res) != N):
-    print(-1)
+if(len(res)):
+    print(*res)
 else:
-    for r in res:
-        print(li[r-1], end=" ")
+    print(-1)
