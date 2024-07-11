@@ -74,12 +74,7 @@ for ttt in range(t):
     for i in range(3):
         arr = list(map(int, input().split()))
         for j in range(3):
-            #없으면 X
-            if(li[i+1] == 0 or li[n+j+1] == 0):
-                continue
-            #capcity : 사람 수, cost : 최대비용이니 * -1
-            else:
-                add_edge(i+1, n + j + 1, li[i], -arr[j])  #s, e, cap, cost
+            add_edge(i+1, n + j + 1, 1, -arr[j] * li[i+1])  #s, e, cap, cost
                 #print(i+1,"->", n+j+1,  1, -arr[j])
 
     #source -> n
