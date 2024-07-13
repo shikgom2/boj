@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 
 def check(arr, r, c, color):
     DR = [0, 0, -1, 1, -1, 1, -1, 1]

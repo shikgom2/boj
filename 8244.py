@@ -2,6 +2,7 @@ import sys
 input = sys.stdin.readline
 from collections import deque
 
+#홀수거리랑 짝수거리 둘 다 체크해야 함.
 def bfs(x, e):
     q = deque([(x,0)])
     visited[x] = True
@@ -35,10 +36,11 @@ for _ in range(k):
         print("TAK")
     else:
         ans = bfs(s,e) #s->e
-        print("ans : " , ans)
         if(ans == 0 or ans > d): #ans = 0 or d까지 도달불가
             print("NIE")
-        elif(ans % 2 and d % 2): #even
+        elif(ans == d):
+            print("TAK")
+        elif(ans % 2 == 1 and d % 2 == 1):
             print("TAK")
         elif(ans % 2 == 0 and d % 2 == 0):
             print("TAK")
