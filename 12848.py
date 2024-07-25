@@ -1,58 +1,36 @@
-def mex(s):
-    """Compute the minimum excludant of a set."""
-    i = 0
-    while i in s:
-        i += 1
-    return i
-
-def compute_grundy(n, removal_options):
-    """Compute the Grundy number for a given number of stones."""
-    if n == 0:
-        return 0
-    grundy = [0] * (n + 1)
-    for i in range(1, n + 1):
-        reachable_states = set()
-        for option in removal_options:
-            if i - option >= 0:
-                reachable_states.add(grundy[i - option])
-        grundy[i] = mex(reachable_states)
-    return grundy[n]
-
-def xor_grundy_numbers(scenarios, removal_options):
-    """Compute the XOR of the Grundy numbers for multiple scenarios."""
-    grundy_numbers = [compute_grundy(n, removal_options) for n in scenarios]
-    result = 0
-    for grundy_number in grundy_numbers:
-        result ^= grundy_number
-    return result, grundy_numbers
-
-
+def check(li, idx, s, e):
+    for x in range(s, e):
+        #print("check li", idx, zzzzzz)
+        if(x == m):
+            return False
+        if li[idx][x] != '.':
+            return False
+    return True
 
 n,m = map(int, input().split())
-grundy = []
+
+graph = []
 for _ in range(n):
-    li = list(map(str, input().strip()))
-    
-    cnt = 0
-    for i in range(len(li)):
-        #print(i)
-        if(li[i] == '@' and cnt >= 1):
-            grundy.append(cnt)
-            cnt = 0
-        else:   
-            cnt += 1
-            if(i == len(li)-1):
-                grundy.append(cnt)
-                cnt = 0
-    
-i = int(input())
+    li = list(map(str, input().rstrip()))
+    graph.append(li)
+k = int(input())
 li = list(map(int, input().split()))
 
-#print(grundy)
-ans, grundy_numbers = xor_grundy_numbers(grundy, li)
-#print(ans,grundy_numbers)
+grundy = [0] * len(li)
 
-if(ans != 0):
+for a in range(k): #check
+    for i in range(n):
+        for j in range(m):
+            e = j + li[a]
+            if(check(graph, i, j, e)):
+                grundy[a] += 1
+                #print("It can!")
+ans = 0
+for i in range(len(grundy)):
+    ans = ans ^ grundy[i]
+
+#print(grundy)
+if(ans):
     print("nein")
 else:
     print("hyo123bin")

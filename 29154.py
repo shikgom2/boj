@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 
 def failure(pattern):
     lps = [0] * len(pattern)
@@ -46,13 +48,39 @@ n, m = map(int, input().split())
 li = list(map(int, input().split()))
 pattern = list(map(int, input().split()))
 
+li.reverse()
+pattern.reverse()
+
 flag = [False] * len(li)
+lps = failure(pattern)
+indices = kmp(li, pattern, lps)
 
-for i in range(2, len(pattern) + 1):
-    tmp = pattern[0:i]    
-    print(tmp)
-    lps = failure(tmp)
-    print(lps)
-    indices = kmp(li, pattern, lps)
+kmp_result = indices[1]
+check = [False] * n
+ans = []
 
-    print(indices)
+print(kmp_result)
+for i in range(len(kmp_result)): 
+    for j in range(kmp_result[i], kmp_result[i] + m):
+        if(check[j] == False):
+            check[j] = True
+
+cur = 0
+for i in range(len(check)):
+    if(check[i]):
+        cur += 1
+    elif(cur > 0):
+        ans.append(cur)
+        cur = 0
+
+if(cur > 0):
+    ans.append(cur)
+
+res = 0
+for i in range(len(ans)):
+    res = res ^ ans[i]
+
+if(res):
+    print("First")
+else:
+    print("Second")
