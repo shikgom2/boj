@@ -5,5 +5,4 @@ for _ in range(n):
     s = input()
     if s[:5] == li:
         ans += 1
-
 print(ans)

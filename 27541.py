@@ -1,6 +1,9 @@
-N = int(input())
-S = input()
-if S[-1] == "G":
-    print(S[:-1])
+n = int(input())
+s = input()
+if s[-1] == "G":
+    print(s[:-1])
 else:
-    print(S + "G")
+    print(s + "G")
+
+
+    

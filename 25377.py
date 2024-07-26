@@ -4,7 +4,6 @@ ans = 10**10
 
 for _ in range(n):
     a,b = map(int, input().split())
-
     if a <= b:
         ans = min(ans, b)
 

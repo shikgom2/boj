@@ -1,4 +1,4 @@
-score = 0
+ans = 0
 chess = {
     ".": 0,
     "K": 0,
@@ -14,11 +14,9 @@ chess = {
     "Q": 9,
     "q": -9,
 }
-
-
 for _ in range(8):
-    line = input()
-    for i in line:
-        score += chess[i]
+    li = input()
+    for i in li:
+        ans += chess[i]
 
-print(score)
+print(ans)

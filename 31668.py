@@ -1,5 +1,8 @@
-N = int(input())
-M = int(input())
-K = int(input())
+n = int(input())
+m = int(input())
+k = int(input())
 
-print(M // N * K)
+print(m // n*k)
+
+
+

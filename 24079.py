@@ -1,8 +1,8 @@
-X = int(input())
-Y = int(input())
-Z = int(input())
+x = int(input())
+y = int(input())
+z = int(input())
 
-if X + Y <= Z:
+if x+y<=z:
     print(1)
 else:
     print(0)

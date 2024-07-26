@@ -1,12 +1,13 @@
-dir = 0
+ans = 0
 for _ in range(10):
-    dir += int(input())
-
-if dir % 4 == 0:
+    k = int(input())
+    ans += k
+if ans % 4 == 0:
     print("N")
-elif dir % 4 == 1:
+elif ans % 4 == 1:
     print("E")
-elif dir % 4 == 2:
+elif ans % 4 == 2:
     print("S")
 else:
+    
     print("W")
