@@ -31,7 +31,7 @@ while(True):
     n,t = map(float, input().split())
     if(n == 0 and t == 0):
         break
-    t *= 100
+    t = t * 100 + 0.5
     t = int(t)
 
     li1 = []
@@ -39,7 +39,7 @@ while(True):
     for _ in range(int(n)):
         a,b= map(float, input().split())
         li1.append(int(a))
-        li2.append(int(b*100))
+        li2.append(int(b*100+0.5))
 
     ans = unbounded_knapsack(t, li2, li1)
     print(ans)
