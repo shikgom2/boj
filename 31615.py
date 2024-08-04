@@ -1,5 +1,5 @@
 a = int(input())
-n = int(input())
+b = int(input())
 
 c = str(a+b)
-print(len(C))
+print(len(c))

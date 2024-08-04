@@ -1,6 +1,6 @@
 n,m = map(int, input().split())
 ans = 0
-for _ in range(N):
+for _ in range(n):
     s = input()
     yes = 0
     no = 0

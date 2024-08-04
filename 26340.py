@@ -3,7 +3,7 @@ for _ in range(n):
     a, b, f = map(int, input().split())
     print(f"Data set: {a} {b} {f}")
 
-    for __ in range(f):
+    for _ in range(f):
         if a > b:
             a = a // 2
         else:

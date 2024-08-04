@@ -1,15 +1,15 @@
 n, k = map(int, input().split())
 
 save = 0
-cur = 0
+ans = 0
 for _ in range(n):
     o = input()
     if o == "save":
-        save = cur
+        save = ans
     elif o == "load":
-        cur = save
+        ans = save
     elif o == "shoot":
-        cur -= 1
+        ans -= 1
     else:
-        cur += k
-    print(cur)
+        ans += k
+    print(ans)
