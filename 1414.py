@@ -1,5 +1,4 @@
 import sys
-
 input = sys.stdin.readline
 
 def find(x):
@@ -22,35 +21,33 @@ def char_to_number(c):
     
 n = int(input())
 
-edges = []
+graph = []
 parent = [i for i in range(n + 1)]
+
+total = 0
+for i in range(n):
+    li = list(map(str, input().rstrip()))
+    for j in range(len(li)):
+        if(li[j] != '0'):
+            weight = char_to_number(li[j])
+            if(i != j):
+                graph.append((i, j, weight))
+                
+            total += weight
+            
+graph.sort(key=lambda x:x[2])
 ans = 0
-sum = 0
-
-for i in range(0, n):
-    weights = list(map(str, input().strip()))
-
-    for j in range(len(weights)):
-        weight = char_to_number(weights[j])
-        sum += weight
-        edges.append((weight, i, j))
-
-edges.sort()
-
-for edge in edges:
-    z, x, y = edge
+count = 0
+for i in range(len(graph)):
+    x = graph[i][0]
+    y = graph[i][1]
+    z = graph[i][2]
     if find(x) != find(y):
         union(x, y)
-        ans += z
-
-connected = True
-root = find(0)
-for i in range(1, n):
-    if find(i) != root:
-        connected = False
-        break
-
-if(connected):
-    print(sum - ans)
-else:
+        ans = ans + z
+        count += 1
+        
+if(count != n-1):
     print(-1)
+else:
+    print(total - ans)
