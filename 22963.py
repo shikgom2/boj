@@ -14,7 +14,12 @@ def lis(li):
 
 n = int(input())
 li = list(map(int, input().split()))
-if(lis(li) == n):
-    print(0)
+
+#n log n, tracking to o(n)?
+ans = lis(li)
+
+if(n-ans <= 3):
+    print("YES")
+    print(n-ans)
 else:
-    print(n-lis(li))
+    print("NO")

@@ -12,9 +12,11 @@ def lis(li):
             lis.append(x)
     return len(lis)
 
+
 n = int(input())
 li = list(map(int, input().split()))
-if(lis(li) == n):
+ans = lis(li)
+if(ans == n):
     print(0)
 else:
-    print(n-lis(li))
+    print(n - ans)
