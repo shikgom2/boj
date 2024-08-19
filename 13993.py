@@ -52,13 +52,11 @@ def solve(n, m, a, b):
 
     return ans
 
-# 메인 함수
-if __name__ == "__main__":
-    inp = Input()
-    if inp.read():
-        result = solve(inp.n, inp.m, inp.a, inp.b)
-        for res in result:
-            if res < 0:
-                print("INFINITY")
-            else:
-                print(res)
+inp = Input()
+if inp.read():
+    result = solve(inp.n, inp.m, inp.a, inp.b)
+    for res in result:
+        if res < 0:
+            print("INFINITY")
+        else:
+            print(res)
