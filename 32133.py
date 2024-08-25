@@ -18,7 +18,6 @@ for i in range(1, m+1):
         else:
             dic[ss] += 1
 
-    print(dic)
     for key, value in dic.items():
         if(value <= k):
             ans = key
