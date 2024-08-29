@@ -1,36 +1,45 @@
-import heapq
+import sys
+input = sys.stdin.readline
+INF = float('inf')
 
+#n^3
 def floyd_warshall(graph):
-    INF = int(1e9)
-    n = len(graph)
-    distance = [[INF] * n for _ in range(n)]
+    V = len(graph)
 
-    for i in range(n):
-        distance[i][i] = 0
+    # 거리 행렬 초기화
+    dist = [[INF] * V for _ in range(V)]
 
-    for i in range(n):
-        for j, w in graph[i]:
-            distance[i][j] = w
+    for i in range(V):
+        for j in range(V):
+            if i == j:
+                dist[i][j] = 0
+            elif graph[i][j] != 0:
+                dist[i][j] = graph[i][j]
 
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+    for k in range(V):
+        for i in range(V):
+            for j in range(V):
+                if dist[i][j] > dist[i][k] + dist[k][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
 
-    return distance
+    return dist
 
-N = int(input())
-M = int(input())
 
-graph = [[] for _ in range(N + 1)]
+n = int(input())
+graph = [[INF] * n for _ in range(n)]
 
-for i in range(M):
-    i,j,k = map(int, input().split())
-    graph[i].append((j, k))
-    '''
-    start, end, cost = map(int, input().split())
-    graph[start].append((end, cost))
-    '''
+for i in range(n):
+    li = list(map(int, input().split()))
+    for j in range(len(li)):
+        if(li[j] == 1):
+            graph[i][j] = 1
+print(graph)
 ans = floyd_warshall(graph)
-
 print(ans)
+for i in range(n):
+    for j in range(n):
+        if(ans[i][j] != INF):
+            print(1, end=" ")
+        else:
+            print(0, end=" ")
+    print()
