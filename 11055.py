@@ -1,18 +1,18 @@
 import sys
 input = sys.stdin.readline
+import bisect
+
+def lis(li):
+    lis = []
+    for x in li:
+        pos = bisect.bisect_left(lis, x)
+        if pos < len(lis):
+            lis[pos] = x
+        else:
+            lis.append(x)
+    return len(lis), li
 
 n = int(input())
 li = list(map(int, input().split()))
 
-#dp n^2
-dp = [0] * n
-
-for i in range(n):
-    cur = 0
-    for j in range(i, n):
-        if(cur <= li[j]):
-            cur = li[j]
-            dp[i] += cur
-            print(f"UPDATE {i}, {cur}")
-
-print(max(dp))
+print(lis(li))
