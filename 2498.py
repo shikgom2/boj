@@ -17,6 +17,7 @@ for i in range(len(s1)):
     #case 1 : all same
     if(s1[i] == s2[i] and s1[i] == s3[i] and s2[i] == s3[i]):
         ans.append(s1[i])
+        
     #case 2 : only s1 different
     elif(s2[i] == s3[i]):
         ans.append(s2[i])

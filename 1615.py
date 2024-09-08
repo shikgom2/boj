@@ -23,22 +23,20 @@ class BIT:
         return self.query(right) - self.query(left - 1)
     
 
-n = int(input())
-tree = BIT(1000001)
+n,m = map(int, input().split())
 
-li1 = list(map(int, input().split()))
-li2 = list(map(int, input().split()))
-
+tree = BIT(n)
+ans = 0
 li = []
-for i in range(n):
-    li.append((li1[i], li2[i]))
+for _ in range(m):
+    a,b = map(int, input().split())
+    li.append((a,b))
 
 li.sort(key= lambda x : (x[0], x[1]))
-print(li)
-ans = []
+
 for i in range(len(li)):
     idx = li[i][1]
-    ans.append(tree.range_query(idx+1, n))
+    ans += tree.range_query(idx+1, n)
     tree.update(idx, 1)
 
 print(ans)
