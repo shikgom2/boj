@@ -146,6 +146,5 @@ for i in range(1, 10):
     ans = solve(n, i)
     li.append(ans)
 
-print(li)
 ans = guess_nth_term(li, k-1)
 print(f'{ans:09d}')

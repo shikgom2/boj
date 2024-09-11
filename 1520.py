@@ -1,6 +1,6 @@
 import sys
 input = sys.stdin.readline
-
+sys.setrecursionlimit(155557)
 dx = [-1, 0, 1, 0]
 dy = [0, 1, 0, -1]
 
