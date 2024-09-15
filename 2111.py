@@ -1,7 +1,7 @@
 import sys
 sys.setrecursionlimit(155757)
 
-SIZE = 100001
+SIZE = 10001
 graph = [[] for _ in range(SIZE)]
 DFS_num = [0] * SIZE
 DFS_min = [0] * SIZE
@@ -51,20 +51,36 @@ v, e = map(int, input().split())
 for _ in range(e):
     a, b = map(int, input().split())
     add_edge(a, b)
-    add_edge(b,a)
-    
 find_bcc(v)
 
-ans = []
-check = [False] * (v+1)
-
+'''
 for i in range(len(BCC)):
-    print(BCC[i])
-    if(len(BCC[i]) == 1):
-        ans.append((BCC[i][0][0], BCC[i][0][1]))
+    for edge in BCC[i]:
+        print(f"({edge[0]},{edge[1]})", end=" ")
+    print()
+'''
 
-ans.sort()
+check = [False] * (v+1)
+for i in range(len(BCC)):
+    if(len(BCC[i]) > 3):
+        for j in range(len(BCC[i])):
+            check[BCC[i][j][0]] = True 
+            check[BCC[i][j][1]] = True 
+        continue
 
-print(len(ans))
-for i in range(len(ans)):
-    print(ans[i][0], ans[i][1])
+    print(check)
+
+    s = set()
+    for j in range(len(BCC[i])):
+        s.add(BCC[i][j][0])
+        s.add(BCC[i][j][1])
+    
+    s = list(s)
+    for j in range(len(s)):
+        if(check[s[j]]):
+            print("Not Cactus")
+            exit()
+        check[s[j]] = True
+
+print("Cactus")
+    
