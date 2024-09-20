@@ -1,0 +1,1 @@
+{"name":"Local: 9019","url":"c:\\Users\\carly\\Documents\\GitHub\\boj\\9019.py","tests":[{"id":1726794388093,"input":"3\n1234 3412\n1000 1\n1 16","output":"LL\nL\nDDDD"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\carly\\Documents\\GitHub\\boj\\9019.py","group":"local","local":true}
