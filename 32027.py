@@ -1,108 +1,81 @@
 import sys
 input = sys.stdin.readline
 
-def check(li):
-    ans = 0
-    # check left
-    max_height = 0
-    for i in range(len(li)):
-        if li[i][1] == 'R':
-            max_height = max(max_height, li[i][0])
-        else:
-            if max_height < li[i][0]:
-                max_height = li[i][0]
-                ans += 1
-                
-    # check right
-    max_height = 0
-    for i in range(len(li) - 1, -1, -1):
-        if li[i][1] == 'L':
-            max_height = max(max_height, li[i][0])
-        else:
-            if max_height < li[i][0]:
-                max_height = li[i][0]
-                ans += 1
-    return ans
-
 n = int(input())
+place = [False] * n  #check L R
 
 left = []
 right = []
- 
-dp = [''] * n
+
 for i in range(n):
-    a, b = map(str, input().split())
-
-    if(b == 'L'):
-        dp[i] = 'L'
-        left.append(int(a))
+    a, dir = input().split()
+    a = int(a)
+    if dir == "R":
+        right.append(a)
+        place[i] = True  # Marking as 'R'
     else:
-        dp[i] = 'R'
-        right.append(int(a))
+        left.append(a)
+        place[i] = False  # Marking as 'L'
 
-#case 1 left asc, right asc
+if len(right) == 0 or len(left) == 0:
+    print(n)
+    exit()
+
 left.sort()
 right.sort()
 
-li = []
-cur_left = 0
-cur_right = 0
+#delete biggest cat
+if(right[-1] < left[-1]):
+    mxcat = left[-1]
+    Md = False
+    left.pop()
+else:
+    mxcat = right[-1]
+    Md = True
+    right.pop()
+
+ans = 0
+
 for i in range(n):
-    if(dp[i] == 'L'):
-       li.append((left[cur_left], "L")) 
-       cur_left += 1
-    else:
-        li.append((right[cur_right], "R"))
-        cur_right += 1
+    if place[i] != Md:
+        continue
 
-ans1 = check(li)
+    temp = [0] * n
+    temp[i] = mxcat
 
-#case 2 left desc, right asc
-left.sort(reverse=True)
-right.sort()
+    ridx = 0
+    for j in range(i):
+        if place[j]:
+            temp[j] = right[ridx]
+            ridx += 1
 
-li = []
-cur_left = 0
-cur_right = 0
-for i in range(n):
-    if(dp[i] == 'L'):
-       li.append((left[cur_left], "L")) 
-       cur_left += 1
-    else:
-        li.append((right[cur_right], "R"))
-        cur_right += 1
-ans2 = check(li)
+    lidx = 0
+    for j in range(n-1, i, -1):
+        if not place[j]:
+            temp[j] = left[lidx]
+            lidx += 1
 
-#case 3 left asc, right desc
-left.sort()
-right.sort(reverse=True)
+    cnt = 1
+    leftmax = 0
+    for j in range(i):
+        if not place[j]:
+            while lidx < len(left) and left[lidx] <= leftmax:
+                lidx += 1
+            if lidx < len(left):
+                cnt += 1
+                temp[j] = left[lidx]
+        leftmax = max(leftmax, temp[j])
 
-li = []
-cur_left = 0
-cur_right = 0
-for i in range(n):
-    if(dp[i] == 'L'):
-       li.append((left[cur_left], "L")) 
-       cur_left += 1
-    else:
-        li.append((right[cur_right], "R"))
-        cur_right += 1
-ans3 = check(li)
+    rightmax = 0
+    for j in range(n-1, i, -1):
+        if place[j]:
+            while ridx < len(right) and right[ridx] <= rightmax:
+                ridx += 1
+            if ridx < len(right):
+                cnt += 1
+                temp[j] = right[ridx]
+        rightmax = max(rightmax, temp[j])
 
-#case 4
-left.sort(reverse=True)
-right.sort(reverse=True)
+    ans = max(ans, cnt)
 
-li = []
-cur_left = 0
-cur_right = 0
-for i in range(n):
-    if(dp[i] == 'L'):
-       li.append((left[cur_left], "L")) 
-       cur_left += 1
-    else:
-        li.append((right[cur_right], "R"))
-        cur_right += 1
-ans4 = check(li)
-
-print(max(ans1, ans2, ans3, ans4))
+print(ans)
