@@ -21,8 +21,7 @@ for ttt in range(t):
     V = n*2+1
     graph = [[] for _ in range(V+1)]
     d = [0] * (V+1)
-
-
+    
     li = []
     for _ in range(n):
         l = list(map(int, input().split()))

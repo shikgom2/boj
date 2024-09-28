@@ -48,4 +48,4 @@ for ttt in range(t):
         if dfs(i):
             ans += 1
 
-    print("Case #{}: {}".format(ttt + 1, n - ans))
+    print(n - ans)
