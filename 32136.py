@@ -1,31 +1,33 @@
 import sys
 input = sys.stdin.readline
 
-def check(i, a):
-    max_dist = 0
-    for j in range(len(a)):
-        max_dist = max(max_dist, abs(i - j) * a[j])
-    return max_dist
+def check(x):
+    min_t = 0
+    max_t = n - 1
+    for i in range(n):
+        t = x // li[i] #t / aj
+        min_t = max(min_t, i - t) #left end
+        max_t = min(max_t, i + t) #right end
 
-def ternary_search(a, left, right):
-    while right - left > 3:
-        mid1 = left + (right - left) // 3
-        mid2 = right - (right - left) // 3
-
-        if check(mid1, a) < check(mid2, a):
-            right = mid2
-        else:
-            left = mid1
-
-    min_value = float('inf')
-    for i in range(left, right + 1):
-        min_value = min(min_value, check(i, a))
-    
-    return min_value
+    if(min_t <= max_t):
+        return True #can
+    else:
+        return False #cant
 
 n = int(input())
 li = list(map(int, input().split()))
 
-ans = ternary_search(li , 0, n - 1)
+left = 0
+right = max(li) * n
+ans = -1
+
+while left <= right:
+    mid = (left + right) // 2
+
+    if (check(mid)): #can all melt in T
+        ans = mid
+        right = mid - 1
+    else:
+        left = mid + 1
 print(ans)
 
