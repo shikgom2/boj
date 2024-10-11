@@ -1,66 +1,69 @@
-import math
 import sys
 input = sys.stdin.readline
 
 def failure(pattern):
-    lps = [0] * len(pattern)
-    length = 0
-    
-    i = 1
-    while i < len(pattern):
-        if pattern[i] == pattern[length]:
-            length += 1
-            lps[i] = length
-            i += 1
-        else:
-            if length != 0:
-                length = lps[length - 1]
-            else:
-                lps[i] = 0
-                i += 1
-    return lps
-
-def kmp(text, pattern, lps):
-
-    i = 0
+    fail = [0] * len(pattern)
     j = 0
-    count = 0
-    indices = []
-
-    while i < len(text):
-        if pattern[j] == text[i]:
-            i += 1
+    for i in range(1, len(pattern)):
+        while j > 0 and pattern[i] != pattern[j]:
+            j = fail[j - 1]
+        if pattern[i] == pattern[j]:
             j += 1
-            #Find Pattern
+            fail[i] = j
+    return fail
+
+n = int(input())
+
+patterns = []
+for _ in range(n):
+    a = input().rstrip().split()
+    patterns.append(a[1])
+
+a = input().rstrip().split()
+target = a[1]
+
+# Collect all occurrences of patterns in target
+positions = []
+for idx, pattern in enumerate(patterns):
+    fail = failure(pattern)
+    j = 0
+    for i, char in enumerate(target):
+        while j > 0 and char != pattern[j]:
+            j = fail[j - 1]
+        if char == pattern[j]:
+            j += 1
             if j == len(pattern):
-                count += 1
-                indices.append(i - j)
-                j = lps[j - 1]
-        #Pattern different : find next index
-        else:
-            if j != 0:
-                j = lps[j - 1]
-            else:
-                i += 1
-    return count, indices
+                start_pos = i - len(pattern) + 1
+                end_pos = i
+                positions.append((start_pos, end_pos, idx))
+                j = fail[j - 1]
 
-lists = []
+# Sort the occurrences by start position
+positions.sort(key=lambda x: x[0])
 
-N = int(input())
-for _ in range(N):
-    tmp = list(map(str, input().split()))
-    lists.append(tmp[1])
+from collections import defaultdict
 
-target = list(map(str, input().split()))
-target = target[1]
+left = 0
+ans = len(target)
+counts = defaultdict(int)
+total_patterns = 0
+required_patterns = n
 
-counts = []
-indices = []
-for i in range(len(lists)):
-    lps = failure(lists[i])
-    count, indice = kmp(target, lists[i], lps)
-    counts.append(count)
-    indices.append(indice)
+# Sliding window over the sorted positions
+for right in range(len(positions)):
+    start_r, end_r, idx_r = positions[right]
+    if counts[idx_r] == 0:
+        total_patterns += 1
+    counts[idx_r] += 1
 
-print(count)
-print(indices)
+    # Try to shrink the window from the left
+    while total_patterns == required_patterns and left <= right:
+        start_l, end_l, idx_l = positions[left]
+        current_length = max(end_r, positions[right][1]) - start_l + 1
+        ans = min(ans, current_length)
+        counts[idx_l] -= 1
+        if counts[idx_l] == 0:
+            total_patterns -= 1
+        left += 1
+
+print(ans)
