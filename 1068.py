@@ -6,18 +6,19 @@ def dfs(x):
     global ans
     
     visited[x] = True
-    if(len(tmp[x]) == 0):
+    if(len(tmp[x]) == 0): #leaf node
         ans += 1
-        
-    for node in tmp[x]:
-        if not visited[node]:
-            dfs(node)
+    else: #DFS
+        for node in tmp[x]:
+            if not visited[node]:
+                dfs(node)
 
 n = int(input())
 li = list(map(int, input().split()))
 
 graph = [[] * (n+1) for _ in range(n+1)]
 
+#initalize graph
 root = -1
 for i in range(len(li)):
     if(li[i] == -1):
@@ -26,8 +27,8 @@ for i in range(len(li)):
     else:
         graph[li[i]].append(i)
 
+#copy graph, and remove nodes
 tmp = copy.deepcopy(graph)
-
 k = int(input())
 if(k == root):
     print(0)
@@ -43,3 +44,5 @@ visited = [False] * (n+1)
 dfs(root)
 
 print(ans)
+
+

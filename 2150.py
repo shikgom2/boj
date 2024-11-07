@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 #DFS
 def dfs(graph, v, visited, stack):
     visited[v] = True
