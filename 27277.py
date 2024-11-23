@@ -12,4 +12,4 @@ del li[0]
 
 for i in range(n//2):
     ans += (li[i] - li[n-i-2])
-print(ans)
+print(ans)z`    `
