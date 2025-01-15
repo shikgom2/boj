@@ -1,7 +1,11 @@
-n = int(input())
-res = 0
-for i in range(n):
-    h, b, k = map(int, input().split())
-    if b-h > 0:
-        res += (b-h)*k
-print(res)
+arr = list(map(int, input().split()))
+
+while True:
+    f = True
+    for i in range(4):
+        if arr[i] > arr[i + 1]:
+            arr[i], arr[i + 1] = arr[i + 1], arr[i]
+            print(' '.join(map(str, arr)))
+            f = False
+    if f:
+        break
