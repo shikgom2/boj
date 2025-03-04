@@ -5,7 +5,7 @@ using namespace std;
 
 int n, k;
 vector<int> a;
-vector<int> seg;  // 세그먼트 트리 (1-indexed)
+vector<int> seg;
 
 void build(int idx, int l, int r) {
     if(l == r) {
@@ -18,7 +18,6 @@ void build(int idx, int l, int r) {
     seg[idx] = max(seg[idx*2], seg[idx*2+1]);
 }
 
-// [ql, qr] 구간에서, 값이 X 이상인 원소 중 오른쪽에서 가장 가까운(즉, 인덱스가 큰) 위치를 찾는다.
 int findRightmost(int idx, int l, int r, int ql, int qr, int X) {
     if(r < ql || l > qr) return -1;
     if(ql <= l && r <= qr) {
@@ -31,7 +30,6 @@ int findRightmost(int idx, int l, int r, int ql, int qr, int X) {
     return findRightmost(idx*2, l, mid, ql, qr, X);
 }
 
-// [ql, qr] 구간에서, 값이 X 이상인 원소 중 왼쪽에서 가장 가까운(즉, 인덱스가 작은) 위치를 찾는다.
 int findLeftmost(int idx, int l, int r, int ql, int qr, int X) {
     if(r < ql || l > qr) return -1;
     if(ql <= l && r <= qr) {
@@ -44,7 +42,6 @@ int findLeftmost(int idx, int l, int r, int ql, int qr, int X) {
     return findLeftmost(idx*2+1, mid+1, r, ql, qr, X);
 }
 
-// 후보 값 p와 목표 tar(n-k)에 대해, 조건을 만족하는 피라미드를 만들 수 있는지 판별
 bool canDo(int p, int tar) {
     for (int i = 0; i < n; i++) {
         if(a[i] < p) continue;  // 중심 후보 조건
@@ -91,11 +88,9 @@ int main(){
         int tar = n - k;
         int mx = *max_element(a.begin(), a.end());
         
-        // 세그먼트 트리 초기화
         seg.assign(4*n, 0);
         build(1, 0, n-1);
         
-        // p에 대해 이분탐색 진행
         int lo = 1, hi = mx + 1, ans = 1;
         while(lo < hi){
             int mid = (lo + hi) / 2;

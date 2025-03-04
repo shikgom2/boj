@@ -12,7 +12,7 @@ ans = 0
 mx = -10**18
 for i, (x, h) in enumerate(li):
     if i == 0:
-        # 가장 왼쪽 나무는 그림자가 없음.
+        # 가장 왼쪽 나무는 그림자가 없음
         mx = h + t * x
         continue
     y = mx - t * x
