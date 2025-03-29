@@ -13,3 +13,4 @@ if (1 << k) == n:
     print(k + 1)
 else:
     print(k + 2)
+    
